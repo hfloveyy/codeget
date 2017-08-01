@@ -1,0 +1,9 @@
+<!--pages/detail/detail.wxml-->
+
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+  <view class="page__bd">
+    <view class="weui-media-box__title weui-media-box__title_in-text">{{result.title}}</view>
+    
+  </view>
+</view>
