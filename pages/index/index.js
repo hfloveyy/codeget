@@ -7,13 +7,21 @@ Page({
     hidden: true,
     list: [],
     scrollTop: 0,
-    scrollHeight: 0
+    scrollHeight: 0,
+    userInfo: {}
   },
   //  这里要非常注意，微信的scroll-view必须要设置高度才能监听滚动事件，
   //所以，需要在页面的onLoad事件中给scroll-view的高度赋值
   onLoad: function () {
     console.log('onLoad')
     var that = this;
+    app.getUserInfo(function (userInfo) {
+      //console.log(userInfo)
+      //更新数据
+      that.setData({
+        userInfo: userInfo
+      })
+    })
     wx.getSystemInfo({
       success: function (res) {
         console.info(res.windowHeight);

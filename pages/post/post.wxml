@@ -4,7 +4,7 @@
 <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
 
   <view class="page__bd">
-
+    <view class="ad_popError" wx:if="{{popErrorMsg}}">{{popErrorMsg}}</view>
     <form bindsubmit="bindPublish">
       <view class="section">
         <view class="weui-media-box__title weui-media-box__title_in-text">项目名称：</view>
@@ -41,12 +41,12 @@
           </view>
         </view>
       </view>
-  
+
       <view class="weui-media-box__title weui-media-box__title_in-text">联系电话：</view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input">
           <view class="weui-cell__bd">
-            <input name="telnum" class="weui-input" placeholder="请输入联系电话" type="number" />
+            <input name="telnum" class="weui-input" placeholder="请输入联系电话" type="number" bindblur="validatemobile" />
           </view>
         </view>
       </view>

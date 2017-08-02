@@ -13,6 +13,7 @@
                 <text class="title weui-cell__bd">{{index+1}}、</text>              
                 <text class="title weui-cell__bd">{{item.title}}</text>
                 <text class="title weui-cell__bd">{{item.content}}</text>
+                <text class="title weui-cell__bd">{{item.userInfo.nickName}}</text>
                 <!--<text class="content weui-cell__ft">{{item.content}}</text>-->
               </view>
             </view>

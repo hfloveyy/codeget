@@ -23,56 +23,56 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-  
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-  
+
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+
   },
   //上传视频
   bindUpVideo: function (e) {
@@ -87,10 +87,10 @@ Page({
         var tempFilePath = Array(res.tempFilePath);
         if (tempFilePath.length > 0) {
           var date = new Date
-          var name = e.detail.value.title+".mp4";//上传的图片的别名，建议可以用日期命名
+          var name = e.detail.value.title + ".mp4";//上传的图片的别名，建议可以用日期命名
           var file = new Bmob.File(name, tempFilePath);
           file.save().then(function (res) {
-            util.addPost(name,String(res.url())).then(res =>{
+            util.addPost(name, String(res.url())).then(res => {
               console.log(res);
               wx.showToast({
                 title: '上传视频成功',
@@ -112,7 +112,7 @@ Page({
 
       }
     })
-    
+
   },
   //上传文件
   bindUpFile: function () {
@@ -123,7 +123,7 @@ Page({
         var tempFilePath = res.tempFilePaths;
         if (tempFilePath.length > 0) {
           var date = new Date
-          var name = date +".jpg";//上传的图片的别名，建议可以用日期命名
+          var name = date + ".jpg";//上传的图片的别名，建议可以用日期命名
           var file = new Bmob.File(name, tempFilePath);
           file.save().then(function (res) {
             console.log(res.url());
@@ -141,18 +141,17 @@ Page({
       index: e.detail.value
     })
   },
-  bindInput : function (e) {
+  bindInput: function (e) {
     this.setData({
       num: e.detail.value.length
     })
   },
   bindPublish: function (e) {
     this.setData({
-        hidden: false
+      hidden: false
     });
     var that = this
     app.getUserInfo(function (userInfo) {
-      console.log(userInfo)
       //更新数据
       that.setData({
         userInfo: userInfo
@@ -163,13 +162,23 @@ Page({
     let days = e.detail.value.days
     let content = e.detail.value.content
     let budget = this.data.budget[index]
-    let yourname = that.userInfo
+    let yourname = this.data.userInfo
     let telnum = e.detail.value.telnum
+    if (title == null || title == "" || days == null || days == ""
+      || content == null || content == "") {
+      console.log("不能为空")
+      this.setData(
+        { popErrorMsg: "内容不能为空" },
+      );
+      this.ohShitfadeOut();
+      that.setData({
+        hidden: true
+      });
+      return;
+    }
 
 
-
-
-    util.addPost(title,budget,days,content,yourname,telnum).then(res => {
+    util.addPost(title, budget, days, content, yourname, telnum).then(res => {
       var that = this
       console.log(res);
       wx.showToast({
@@ -182,5 +191,51 @@ Page({
         hidden: true
       });
     })
+  },
+  ohShitfadeOut() {
+    var fadeOutTimeout = setTimeout(() => {
+      this.setData({ popErrorMsg: '' });
+      clearTimeout(fadeOutTimeout);
+    }, 3000);
+  },
+  validatemobile: function (e) {
+    var that = this
+    var mobile = e.detail.value
+    var pos = e.detail.cursor
+    if (pos != -1) {
+      //光标在中间
+      var left = e.detail.value.slice(0, pos)
+      //计算光标的位置
+      pos = left.replace(/11/g, '2').length
+    }
+    if (mobile.length == 0) {
+      wx.showToast({
+        title: '请输入手机号！',
+        icon: 'success',
+        duration: 1000
+      })
+
+      return
+    }
+    if (mobile.length != 11) {
+      wx.showToast({
+        title: '手机号长度有误！',
+        icon: 'success',
+        duration: 1000
+      })
+
+      return
+    }
+    var myreg = /^1[34578]\d{9}$/;
+    if (!myreg.test(mobile)) {
+      wx.showToast({
+        title: '手机号有误！',
+        icon: 'success',
+        duration: 1000
+      })
+
+      return
+    }
+
   }
 })

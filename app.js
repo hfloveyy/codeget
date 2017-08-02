@@ -52,6 +52,7 @@ App({
             }
 
           }, function (err) {
+            console.log('here');
             console.log(err, 'errr');
           });
 
