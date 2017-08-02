@@ -15,7 +15,7 @@ Page({
     userInfo: {},
     hidden: true,
     num: 0,
-    index: 0,
+    typelist: ['Web','移动APP','微信开发','爬虫类','数据挖掘类','其他'],
     budget: ['100-1000', '1000-5000', '5000-10000', '1万-3万', '3万-5万', '5万-10万', '10万以上', '待商议']
   },
 
@@ -74,65 +74,10 @@ Page({
   onShareAppMessage: function () {
 
   },
-  //上传视频
-  bindUpVideo: function (e) {
-    var that = this;
-    that.setData({
-      hidden: false
-    });
-    wx.chooseVideo({
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
-
-        var tempFilePath = Array(res.tempFilePath);
-        if (tempFilePath.length > 0) {
-          var date = new Date
-          var name = e.detail.value.title + ".mp4";//上传的图片的别名，建议可以用日期命名
-          var file = new Bmob.File(name, tempFilePath);
-          file.save().then(function (res) {
-            util.addPost(name, String(res.url())).then(res => {
-              console.log(res);
-              wx.showToast({
-                title: '上传视频成功',
-              });
-              wx.switchTab({
-                url: '../index/index'
-              });
-              that.setData({
-                hidden: true
-              });
-            })
-          }, function (error) {
-            console.log(error);
-            that.setData({
-              hidden: true
-            });
-          })
-        }
-
-      }
-    })
-
-  },
-  //上传文件
-  bindUpFile: function () {
-    wx.chooseImage({
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
-
-        var tempFilePath = res.tempFilePaths;
-        if (tempFilePath.length > 0) {
-          var date = new Date
-          var name = date + ".jpg";//上传的图片的别名，建议可以用日期命名
-          var file = new Bmob.File(name, tempFilePath);
-          file.save().then(function (res) {
-            console.log(res.url());
-          }, function (error) {
-            console.log(error);
-          })
-        }
-
-      }
+  bindPickerChange1: function (e) {
+    //console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      one: e.detail.value
     })
   },
   bindPickerChange: function (e) {
@@ -158,10 +103,17 @@ Page({
       })
     })
     let title = e.detail.value.title
+
+    let typeone = e.detail.value.typepicker
+    let protype = this.data.typelist[typeone]
+
     let index = e.detail.value.picker
+    let budget = this.data.budget[index]
+
     let days = e.detail.value.days
     let content = e.detail.value.content
-    let budget = this.data.budget[index]
+    
+    
     let yourname = this.data.userInfo
     let telnum = e.detail.value.telnum
     if (title == null || title == "" || days == null || days == ""
@@ -178,7 +130,7 @@ Page({
     }
 
 
-    util.addPost(title, budget, days, content, yourname, telnum).then(res => {
+    util.addPost(title, protype,budget, days, content, yourname, telnum).then(res => {
       var that = this
       console.log(res);
       wx.showToast({

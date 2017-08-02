@@ -1,6 +1,7 @@
 <!--pages/post/post.wxml-->
 
 <!--post.wxml-->
+<import src="../common/foot.wxml" />
 <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
 
   <view class="page__bd">
@@ -15,6 +16,12 @@
             </view>
           </view>
         </view>
+      </view>
+      <view class="section">
+        <view class="weui-media-box__title weui-media-box__title_in-text">项目类型：</view>
+        <picker name="typepicker" class="weui-btn" bindchange="bindPickerChange1" value="{{one}}" range="{{typelist}}">
+          <button type="default">当前选择：{{typelist[one]}}</button>
+        </picker>
       </view>
       <view class="section">
         <view class="weui-media-box__title weui-media-box__title_in-text">项目预算：</view>
@@ -61,12 +68,14 @@
       <view class="weui-btn-area">
         <button formType="submit" class="weui-btn" type="primary">发布</button>
       </view>
-
     </form>
+
     <view class="body-view">
       <loading hidden="{{hidden}}" bindchange="loadingChange">
         发布中...
       </loading>
     </view>
+
   </view>
+
 </view>

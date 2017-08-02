@@ -1,4 +1,5 @@
 <!--index.wxml-->
+<import src="../common/foot.wxml"  />
 <view class="page">
   <view class="page__hd">
   </view>
@@ -9,11 +10,29 @@
         <block wx:for="{{list}}">
           <view class="item weui-cells weui-cells_after-title">
             <view class="weui-cell">
+              <block wx:if="{{item.protype == 'Web'}}">
+                <image class="userinfo-avatar" src="/images/web.png" background-size="cover"></image>
+              </block>
+              <block wx:elif="{{item.protype == '微信开发'}}">
+                <image class="userinfo-avatar" src="/images/微信.png" background-size="cover"></image>
+              </block>
+              <block wx:elif="{{item.protype == '移动APP'}}">
+                <image class="userinfo-avatar" src="/images/移动APP.png" background-size="cover"></image>
+              </block>
+              <block wx:elif="{{item.protype == '爬虫类'}}">
+                <image class="userinfo-avatar" src="/images/爬虫.png" background-size="cover"></image>
+              </block>
+              <block wx:elif="{{item.protype == '数据挖掘类'}}">
+                <image class="userinfo-avatar" src="/images/数据挖掘.png" background-size="cover"></image>
+              </block>
+              <block wx:elif="{{item.protype == '其他'}}">
+                <image class="userinfo-avatar" src="/images/其他.png" background-size="cover"></image>
+              </block>
               <view class="text" data-id="{{item.objectId}}" bindtap="listAction">
-                <text class="title weui-cell__bd">{{index+1}}、</text>              
-                <text class="title weui-cell__bd">{{item.title}}</text>
-                <text class="title weui-cell__bd">{{item.content}}</text>
-                <text class="title weui-cell__bd">{{item.userInfo.nickName}}</text>
+                <text class="title weui-cell__bd">项目名称：{{item.title}}\n</text>
+                <text class="title weui-cell__bd">类型：{{item.protype}}\n</text>
+                <text class="title weui-cell__bd">预算：{{item.budget}}\n</text>
+                <view class="weui-textarea-counter">点击查看详情...</view>
                 <!--<text class="content weui-cell__ft">{{item.content}}</text>-->
               </view>
             </view>
@@ -24,9 +43,9 @@
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">
             码赚
-            </view>
+          </view>
           <view class="weui-media-box__desc">
-          by Kn0w thyself
+            by Kn0w thyself
           </view>
 
         </view>
@@ -37,5 +56,6 @@
         加载中...
       </loading>
     </view>
+    <template is="foot"  />
   </view>
 </view>

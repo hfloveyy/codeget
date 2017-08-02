@@ -1,9 +1,27 @@
-<!--pages/detail/detail.wxml-->
-
-<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
-
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">项目名称：{{result.title}}</view>
+  </view>
   <view class="page__bd">
-    <view class="weui-media-box__title weui-media-box__title_in-text">{{result.title}}</view>
-    
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">项目类型：{{result.protype}}</view>
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">项目需求：</view>
+          <view class="weui-media-box__title weui-media-box__title_in-text">{{result.content}}</view>
+        </view>
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">项目预算：</view>
+          <view class="weui-media-box__title weui-media-box__title_in-text">{{result.budget}}</view>
+        </view>
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">项目周期：</view>
+          <view class="weui-media-box__title weui-media-box__title_in-text">{{result.days}}天</view>
+        </view>
+        <view class="weui-btn-area">
+          <button bindtap="joinin" class="weui-btn" type="primary">参加项目</button>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
