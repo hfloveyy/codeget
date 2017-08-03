@@ -114,7 +114,7 @@ Page({
     let content = e.detail.value.content
     
     
-    let yourname = this.data.userInfo
+    let user  = Bmob.User.current();
     let telnum = e.detail.value.telnum
     if (title == null || title == "" || days == null || days == ""
       || content == null || content == "") {
@@ -130,7 +130,7 @@ Page({
     }
 
 
-    util.addPost(title, protype,budget, days, content, yourname, telnum).then(res => {
+    util.addPost(title, protype,budget, days, content, user, telnum).then(res => {
       var that = this
       console.log(res);
       wx.showToast({

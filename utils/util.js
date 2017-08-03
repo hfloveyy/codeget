@@ -25,7 +25,7 @@ function formatNumber(n) {
 
 
 //添加一条数据
-function addPost(title, protype,budget, days, content, yourname, telnum) {
+function addPost(title, protype,budget, days, content, user, telnum) {
   var Project = Bmob.Object.extend("project");
   var project = new Project();
   project.set("title", title);
@@ -33,7 +33,7 @@ function addPost(title, protype,budget, days, content, yourname, telnum) {
   project.set("budget", budget);
   project.set("days", days);
   project.set("content", content);
-  project.set("yourname", yourname);
+  project.set("user", user);
   project.set("telnum", telnum);
 
   return new Promise((resolve, reject) => {

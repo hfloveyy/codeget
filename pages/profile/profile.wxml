@@ -1,5 +1,5 @@
 <!--profile.wxml-->
-<import src="../common/foot.wxml"  />
+<import src="../common/foot.wxml" />
 
 <view class="page">
   <view class="page__hd">
@@ -13,18 +13,24 @@
       <view class="weui-panel__hd">发布的项目：</view>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text">
-          <view class="weui-media-box__title weui-media-box__title_in-text">项目需求：</view>
-          <view class="weui-media-box__title weui-media-box__title_in-text">{{result.content}}</view>
+          <block wx:if="{{myproject.length>0}}">
+            <block wx:for="{{myproject}}">
+              <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
+            </block>
+          </block>
         </view>
       </view>
       <view class="weui-panel__hd">参加的项目：</view>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text">
-          <view class="weui-media-box__title weui-media-box__title_in-text">项目需求：</view>
-          <view class="weui-media-box__title weui-media-box__title_in-text">{{result.content}}</view>
+          <block wx:if="{{join_in_porject.length>0}}">
+            <block wx:for="{{join_in_porject}}">
+              <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
+            </block>
+          </block>
         </view>
       </view>
     </view>
   </view>
-  <template is="foot"  />
+  <template is="foot" />
 </view>
