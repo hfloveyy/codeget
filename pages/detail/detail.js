@@ -96,8 +96,6 @@ Page({
         console.log("detail:共查询到 " + results.length + " 条记录");
         // 循环处理查询到的数据
         var object = results[0];
-        console.log(currentUser);
-        console.log(object.id + ' - ' + object.get('title'));
         object.addUnique("people", currentUser.id);
         object.save()
         wx.showToast({

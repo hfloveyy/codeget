@@ -49,7 +49,6 @@ Page({
     var Project = Bmob.Object.extend("project");
     //创建查询对象，入口参数是对象类的实例
     var query = new Bmob.Query(Project);
-    console.log(this.data.userInfo);
     query.equalTo("user", currentUser);
     query.find({
       success: function (results) {
@@ -58,16 +57,18 @@ Page({
           myproject: results
         })
         // 循环处理查询到的数据
+        /*
         for (var i = 0; i < results.length; i++) {
           var object = results[i];
           console.log(object.id + ' - ' + object.get('title'));
-        }
+        }*/
       },
       error: function (error) {
         console.log("查询失败: " + error.code + " " + error.message);
       }
     });
-    var query2 = new Bmob.Query(Project);
+    var Project2 = Bmob.Object.extend("project");
+    var query2 = new Bmob.Query(Project2);
     query2.equalTo("people", currentUser.id);
     query2.find({
       success: function (results) {
@@ -76,15 +77,23 @@ Page({
           join_in_porject: results
         })
         // 循环处理查询到的数据
+        /*
         for (var i = 0; i < results.length; i++) {
           var object = results[i];
           console.log(object.id + ' - ' + object.get('title'));
-        }
+        }*/
       },
       error: function (error) {
         console.log("查询失败: " + error.code + " " + error.message);
       }
     });
+  },
+  listAction: function (e) {
+    var id = e.currentTarget.dataset.id
+    console.log("点击" + e.currentTarget.dataset.id)
+    wx.navigateTo({
+      url: '../detail/detail?id=' + id,
+    })
   },
 
   /**

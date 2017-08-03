@@ -15,7 +15,9 @@
         <view class="weui-media-box weui-media-box_text">
           <block wx:if="{{myproject.length>0}}">
             <block wx:for="{{myproject}}">
-              <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
+              <view class="text" data-id="{{item.objectId}}" bindtap="listAction">
+                <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
+              </view>
             </block>
           </block>
         </view>
@@ -25,7 +27,9 @@
         <view class="weui-media-box weui-media-box_text">
           <block wx:if="{{join_in_porject.length>0}}">
             <block wx:for="{{join_in_porject}}">
-              <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
+              <view class="text" data-id="{{item.objectId}}" bindtap="listAction">
+                <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
+              </view>
             </block>
           </block>
         </view>
