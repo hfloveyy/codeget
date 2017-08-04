@@ -112,7 +112,7 @@ Page({
 
     let days = e.detail.value.days
     let content = e.detail.value.content
-    
+    let status = 'recruiting'
     
     let user  = Bmob.User.current();
     let telnum = e.detail.value.telnum
@@ -130,7 +130,7 @@ Page({
     }
 
 
-    util.addPost(title, protype,budget, days, content, user, telnum).then(res => {
+    util.addPost(title, protype,budget, days, content, user, telnum,status).then(res => {
       var that = this
       console.log(res);
       wx.showToast({

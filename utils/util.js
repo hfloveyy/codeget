@@ -25,7 +25,7 @@ function formatNumber(n) {
 
 
 //添加一条数据
-function addPost(title, protype,budget, days, content, user, telnum) {
+function addPost(title, protype, budget, days, content, user, telnum, status) {
   var Project = Bmob.Object.extend("project");
   var project = new Project();
   project.set("title", title);
@@ -35,7 +35,7 @@ function addPost(title, protype,budget, days, content, user, telnum) {
   project.set("content", content);
   project.set("user", user);
   project.set("telnum", telnum);
-
+  project.set("status", status)
   return new Promise((resolve, reject) => {
     //添加数据，第一个入口参数是null
     project.save(null, {
@@ -60,19 +60,47 @@ function getDetail(objectId) {
   //创建查询对象，入口参数是对象类的实例
   var query = new Bmob.Query(Project);
   var promise = new Promise(function (resolve, reject) {
-  //查询单条数据，第一个参数是这条数据的objectId值
-  query.get(objectId, {
-    success: function (result) {
-      // 查询成功，调用get方法获取对应属性的值
-      resolve({
-        data: result
-      })
-    },
-    error: function (object, error) {
-      // 查询失败
-      reject(error)
-    }
-  })
+    //查询单条数据，第一个参数是这条数据的objectId值
+    query.get(objectId, {
+      success: function (result) {
+        // 查询成功，调用get方法获取对应属性的值
+        console.log(result)
+
+        resolve({
+          data: result
+        })
+      },
+      error: function (object, error) {
+        // 查询失败
+        reject(error)
+      }
+    })
+  });
+  return promise
+}
+
+function getPeople(objectId) {
+  var Project_User = Bmob.Object.extend("project_user");
+  var user = new Bmob.Query(Bmob.User)
+  //创建查询对象，入口参数是对象类的实例
+  var query = new Bmob.Query(Project_User);
+  var promise = new Promise(function (resolve, reject) {
+    query.equalTo("pro_id", objectId);
+    //
+    user.matchesKeyInQuery("objectId", "user_id", query);
+    user.find({
+      success: function (results) {
+        console.log(results)
+
+        resolve({
+          data: results
+        })
+      },
+      error: function (object, error) {
+        // 查询失败
+        reject(error)
+      }
+    })
   });
   return promise
 }
@@ -85,7 +113,7 @@ function getList() {
   query.descending('updatedAt')
   var results = []
   //var list = [{title:"failed"}];
-  var promise = new Promise(function(resolve,reject){
+  var promise = new Promise(function (resolve, reject) {
     query.find({
       success: function (results) {
         // 循环处理查询到的数据
@@ -116,5 +144,6 @@ module.exports = {
   addPost: addPost,
   getList: getList,
   getDetail: getDetail,
+  getPeople: getPeople,
   Bmob: Bmob
 }

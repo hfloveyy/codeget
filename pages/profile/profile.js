@@ -67,35 +67,45 @@ Page({
         console.log("查询失败: " + error.code + " " + error.message);
       }
     });
+    var Project_User = Bmob.Object.extend("project_user");
     var Project2 = Bmob.Object.extend("project");
-    var query2 = new Bmob.Query(Project2);
-    query2.equalTo("people", currentUser.id);
-    query2.find({
+    var query2 = new Bmob.Query(Project_User);
+    var proQuery = new Bmob.Query(Project2);
+    query2.equalTo("user_id", currentUser.id);
+    proQuery.matchesKeyInQuery("objectId","pro_id",query2);
+    proQuery.find({
       success: function (results) {
         console.log("参加：共查询到 " + results.length + " 条记录");
         that.setData({
           join_in_porject: results
         })
         // 循环处理查询到的数据
-        /*
+        
         for (var i = 0; i < results.length; i++) {
           var object = results[i];
           console.log(object.id + ' - ' + object.get('title'));
-        }*/
+
+        }
       },
       error: function (error) {
         console.log("查询失败: " + error.code + " " + error.message);
       }
     });
   },
-  listAction: function (e) {
+  publish_action: function (e) {
     var id = e.currentTarget.dataset.id
     console.log("点击" + e.currentTarget.dataset.id)
     wx.navigateTo({
-      url: '../detail/detail?id=' + id,
+      url: '../detail/detail?id=' + id + '&op=' + 'publish',
     })
   },
-
+  joinin_action: function (e){
+    var id = e.currentTarget.dataset.id
+    console.log("点击" + e.currentTarget.dataset.id)
+    wx.navigateTo({
+      url: '../detail/detail?id=' + id +'&op='+'joinin',
+    })
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */

@@ -18,8 +18,14 @@
           <view class="weui-media-box__title weui-media-box__title_in-text">项目周期：</view>
           <view class="weui-media-box__title weui-media-box__title_in-text">{{result.days}}天</view>
         </view>
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">招募到的开发者：</view>
+          <block wx:for="{{people}}">
+            <view class="weui-media-box__title weui-media-box__title_in-text">{{item.nickName}}</view>
+          </block>
+        </view>
         <view class="weui-btn-area">
-          <button bindtap="joinin" class="weui-btn" type="primary">参加项目</button>
+          <button  hidden="{{hidden}}"  bindtap="joinin" class="weui-btn" type="primary">参加项目</button>
         </view>
       </view>
     </view>

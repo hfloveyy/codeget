@@ -35,6 +35,7 @@
                 <view class="weui-textarea-counter">点击查看详情...</view>
                 <!--<text class="content weui-cell__ft">{{item.content}}</text>-->
               </view>
+              <text class="title weui-cell__bd">{{item.status}}</text>
             </view>
           </view>
         </block>
