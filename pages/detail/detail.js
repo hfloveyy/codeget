@@ -13,30 +13,44 @@ Page({
     result: {},
     hidden: false,
     userInfo: {},
-    people: {}
+    people: {},
+    isJoinin: false,
+    own:{},
+    ownerid:null,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var currentUser = Bmob.User.current();
+    var pro_owner = new Bmob.User()
     var id = options.id
     var op = options.op
-    console.log(op)
     var that = this;
+    that.setData({
+        ownerid:currentUser.id
+    });
     util.getDetail(id).then(res => {
 
       that.setData({
         result: res.data,
+        pro_owner:res.user
       });
     });
+  
     util.getPeople(id).then(res => {
 
       that.setData({
         people: res.data,
       });
     });
-
+    util.isJoinin(id, currentUser.id).then(res => {
+      that.setData({
+        isJoinin: res.data,
+      });
+    });
+    //console.log(that.data.isJoinin);
 
 
     /**

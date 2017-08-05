@@ -4,7 +4,10 @@
     "pages/logs/logs",
     "pages/post/post",
     "pages/detail/detail",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/personal/personal",
+    "pages/about/about",
+    "pages/rules/rules"
   ],
   "window": {
     "backgroundTextStyle": "light",

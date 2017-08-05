@@ -64,10 +64,9 @@ function getDetail(objectId) {
     query.get(objectId, {
       success: function (result) {
         // 查询成功，调用get方法获取对应属性的值
-        console.log(result)
-
         resolve({
-          data: result
+          data: result,
+          user: result.get("user")
         })
       },
       error: function (object, error) {
@@ -139,11 +138,55 @@ function getList() {
 
 
 
+
+
+function isJoinin(objectId, userId) {
+  //console.log(objectId)
+  //console.log(userId)
+  
+  
+  var ret = false;
+  var Project = Bmob.Object.extend("project_user");
+  //创建查询对象，入口参数是对象类的实例
+  var query = new Bmob.Query(Project);
+  var promise = new Promise(function (resolve, reject) {
+    query.equalTo("pro_id", objectId)
+    //查询单条数据，第一个参数是这条数据的objectId值
+    query.find({
+      success: function (results) {
+        // 查询成功，调用get方法获取对应属性的值
+        
+        //console.log(results.length)
+        for (var i = 0; i < results.length; i++) {
+          var object = results[i];
+          //console.log(object.id + ' - ' + object.get('user_id'));
+          if (object.get('user_id') == userId) {
+            ret = true;
+            break
+          }
+
+        }
+        resolve({
+          data: ret
+        })
+      },
+      error: function (object, error) {
+        // 查询失败
+        resolve({
+          data: ret
+        })
+      }
+    })
+  });
+  return promise
+}
+
 module.exports = {
   formatTime: formatTime,
   addPost: addPost,
   getList: getList,
   getDetail: getDetail,
   getPeople: getPeople,
+  isJoinin: isJoinin,
   Bmob: Bmob
 }
