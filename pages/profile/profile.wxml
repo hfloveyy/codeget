@@ -14,16 +14,25 @@
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
           <view class="weui-cells weui-cells_in-small-appmsg">
-            <navigator url="release/release" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="../personal/personal?currentId={{currentId}}"  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
               <view class="weui-cell__hd">
-                <image src="/images/reg.png" style="width: 20px;height: 20px;margin-right: 5px" />
+                <image src="/images/edit.png" style="width: 20px;height: 20px;margin-right: 5px" />
               </view>
               <view class="weui-cell__bd weui-cell_primary">
-                <view>我发布的</view>
+                <view>个人资料</view>
               </view>
               <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </navigator>
-            <navigator url="feedback/feedback" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="../rules/rules" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+              <view class="weui-cell__hd">
+                <image src="/images/rules.png" style="width: 20px;height: 20px;margin-right: 5px" />
+              </view>
+              <view class="weui-cell__bd weui-cell_primary">
+                <view>规则</view>
+              </view>
+              <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            </navigator>
+            <navigator url="../feedback/feedback" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
               <view class="weui-cell__hd">
                 <image src="/images/edit.png" style="width: 20px;height: 20px;margin-right: 5px" />
               </view>

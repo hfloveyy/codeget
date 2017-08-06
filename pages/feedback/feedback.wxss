@@ -1,4 +1,3 @@
-/* personal.wxss */
 
 .g-bda-userinfo {
   padding-top: 50rpx;
@@ -15,4 +14,6 @@
   border-radius: 50%;
   border: 2px solid #fff;
 }
-
+.userinfo-nickname{
+  color: #fff;
+}

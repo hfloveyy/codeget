@@ -26,6 +26,7 @@
           </block>
         </view>
         </block>
+        <block wx:else>
         <view class="weui-btn-area">
           <block wx:if="{{isJoinin}}">
             <button class="weui-btn" type="primary" disabled="true">已参加</button>
@@ -34,6 +35,7 @@
             <button bindtap="joinin" class="weui-btn" type="primary">参加项目</button>
           </block>
         </view>
+        </block>
       </view>
     </view>
   </view>

@@ -1,66 +1,55 @@
-// personal.js
+var util = require('../../utils/util.js');
+var Bmob = util.Bmob;
+var app = getApp()
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-  
+    userInfo: {},
+    complete:false,
+    result:{}
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-  
+    var that = this
+    var currentId = options.currentId;
+    console.log(currentId)
+    util.getPersonalData(currentId).then(res =>{
+      that.setData({
+        result: res.data,
+        complete:res.ret
+      });
+    });
+
+
+
+    //调用应用实例的方法获取全局数据
+    app.getUserInfo(function (userInfo) {
+      console.log(userInfo)
+      //更新数据
+      that.setData({
+        userInfo: userInfo
+      })
+    })
+
+  },
+  personalData: function (event) {
+    var that = this;
+    var contact = event.detail.value.contact;
+    var content = event.detail.value.content;
+
+    if (!contact) {
+      common.showTip("标题不能为空", "loading");
+      return false;
+    }
+    else if (!content) {
+      common.showTip("内容不能为空", "loading");
+      return false;
+    }
+    else {
+      that.setData({
+        loading: true
+      })
+      util.addPersonalData()
+    }
+
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
 })

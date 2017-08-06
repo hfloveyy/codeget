@@ -54,6 +54,34 @@ function addPost(title, protype, budget, days, content, user, telnum, status) {
 }
 
 
+
+function addPersonalData(user,telnum,weixin,qq,github,content) {
+  var Project = Bmob.Object.extend("personalData");
+  var project = new Project();
+  project.set("user", user);
+  project.set("telnum", telnum);
+  project.set("weixin", weixin);
+  project.set("qq", qq);
+  project.set("content", content);
+  return new Promise((resolve, reject) => {
+    //添加数据，第一个入口参数是null
+    project.save(null, {
+      success: function (result) {
+        // 添加成功，返回成功之后的objectId（注意：返回的属性名字是id，不是objectId），你还可以在Bmob的Web管理后台看到对应的数据
+        console.log("创建成功, objectId:" + result.id);
+        resolve(result)
+      },
+      error: function (result, error) {
+        // 添加失败
+        console.log('创建失败');
+        resolve(error)
+      }
+    });
+  });
+}
+
+
+
 //news详细页面
 function getDetail(objectId) {
   var Project = Bmob.Object.extend("project");
@@ -181,6 +209,34 @@ function isJoinin(objectId, userId) {
   return promise
 }
 
+function getPersonalData(userId){
+  var ret = false
+  var personal = Bmob.Object.extend("personalData");
+  var query = new Bmob.Query(personal);
+  var promise = new Promise(function (resolve, reject) {
+    //查询单条数据，第一个参数是这条数据的objectId值
+    query.get(userId,{
+      success: function (result) {
+        // 查询成功，调用get方法获取对应属性的值
+
+        //console.log(results.length)
+        resolve({
+          data: result,
+          ret: true
+        })
+      },
+      error: function (object, error) {
+        // 查询失败
+        resolve({
+          data: null,
+          ret: false
+        })
+      }
+    })
+  });
+  return promise
+}
+
 module.exports = {
   formatTime: formatTime,
   addPost: addPost,
@@ -188,5 +244,7 @@ module.exports = {
   getDetail: getDetail,
   getPeople: getPeople,
   isJoinin: isJoinin,
+  getPersonalData: getPersonalData,
+  addPersonalData: addPersonalData,
   Bmob: Bmob
 }
