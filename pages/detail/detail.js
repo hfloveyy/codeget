@@ -138,53 +138,19 @@ Page({
             url: '../profile/profile'
           });
         })
-
-
       },
       error: function (error) {
-
         console.log("查询失败: " + error.code + " " + error.message);
       }
     })
+  },
 
-    /*
-    var Project = Bmob.Object.extend("project");
-    var query = new Bmob.Query(Project);
-    //query.equalTo("objectId", this.data.result.id);
 
-    var that = this
-    query.get(this.data.result.id, {
-      success: function (result) {
-        console.log("detail:" + result);
-        // 循环处理查询到的数据
-        var object = result
-        if (object.get('people') == null) {
-          var people = new Set()
-          console.log("1" + people)
-
-        } else {
-          people = object.get('people')
-          console.log("2" + people)
-          var people_set = new Set(people)
-        }
-        console.log("3" + people)
-        people_set.add(currentUser)
-        let array = Array.from(people_set)
-        object.set("people", array);
-        object.save().then(function (object) {
-          wx.showToast({
-            title: '参加项目成功!',
-          });
-          wx.switchTab({
-            url: '../profile/profile'
-          });
-        })
-
-      },
-      error: function (error) {
-        console.log("detail:查询失败: " + error.code + " " + error.message);
-      }
-    });
-    */
-  }
+  userDetail:function(e){
+      var user = e.target.dataset.user;
+      console.log("查询user: " + user.get("nickName"));
+      wx.navigateTo({
+        url: '../userDetail/userDetail?user='+user
+      })
+  },
 })

@@ -1,3 +1,4 @@
+
 var Bmob = require('bmob.js');
 var common = require('common.js');
 
@@ -55,10 +56,10 @@ function addPost(title, protype, budget, days, content, user, telnum, status) {
 
 
 
-function addPersonalData(user,telnum,weixin,qq,github,content) {
+function addPersonalData(userid,telnum,weixin,qq,github,content) {
   var Project = Bmob.Object.extend("personalData");
   var project = new Project();
-  project.set("user", user);
+  project.set("userid", userid);
   project.set("telnum", telnum);
   project.set("weixin", weixin);
   project.set("qq", qq);
@@ -215,15 +216,24 @@ function getPersonalData(userId){
   var query = new Bmob.Query(personal);
   var promise = new Promise(function (resolve, reject) {
     //查询单条数据，第一个参数是这条数据的objectId值
-    query.get(userId,{
-      success: function (result) {
+    query.equalTo("userid",userId)
+    query.find({
+      success: function (results) {
         // 查询成功，调用get方法获取对应属性的值
-
-        //console.log(results.length)
-        resolve({
-          data: result,
-          ret: true
-        })
+        console.log("共查询到 " + results.length + " 条记录");
+        // 循环处理查询到的数据
+        if(results.length>0){
+          resolve({
+            data: results[0],
+            ret: true
+          })
+        }else{
+          resolve({
+            data: null,
+            ret: false
+          })
+        }
+        
       },
       error: function (object, error) {
         // 查询失败

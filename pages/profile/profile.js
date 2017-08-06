@@ -113,7 +113,7 @@ Page({
 
 
   about: function (e) {
-    common.showModal('搭建客户--开发者项目供需平台！');
+    common.showModal('码赚是一个搭建客户<-->开发者项目供需平台！');
   },
 
   /**

@@ -22,7 +22,7 @@
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">招募到的开发者：</view>
           <block wx:for="{{people}}">
-            <view class="weui-media-box__title weui-media-box__title_in-text">{{item.nickName}}</view>
+            <view bindtap="userDetail" data-user="item" class="weui-media-box__title weui-media-box__title_in-text">{{item.nickName}}</view>
           </block>
         </view>
         </block>
