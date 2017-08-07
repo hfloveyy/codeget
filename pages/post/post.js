@@ -112,7 +112,7 @@ Page({
 
     let days = e.detail.value.days
     let content = e.detail.value.content
-    let status = 'recruiting'
+    let status = '招募中'
     
     let user  = Bmob.User.current();
     let telnum = e.detail.value.telnum

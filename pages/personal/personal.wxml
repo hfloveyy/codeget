@@ -21,7 +21,7 @@
           <view class="weui-cells weui-cells_in-small-appmsg">
             <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
               <view class="weui-cell__hd">
-                <image src="/images/edit.png" style="width: 20px;height: 20px;margin-right: 5px" />
+                <image src="/images/tel.png" style="width: 20px;height: 20px;margin-right: 5px" />
               </view>
               <view class="weui-cell__bd weui-cell_primary">
                 <view catchtap="toModifyData" data-content="telnum">电话:{{result.telnum}}</view>
@@ -30,7 +30,7 @@
             </view>
             <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
               <view class="weui-cell__hd">
-                <image src="/images/edit.png" style="width: 20px;height: 20px;margin-right: 5px" />
+                <image src="/images/weixin.png" style="width: 20px;height: 20px;margin-right: 5px" />
               </view>
               <view class="weui-cell__bd weui-cell_primary">
                 <view catchtap="toModifyData" data-content="weixin">微信：{{result.weixin}}</view>
@@ -39,7 +39,7 @@
             </view>
             <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
               <view class="weui-cell__hd">
-                <image src="/images/edit.png" style="width: 20px;height: 20px;margin-right: 5px" />
+                <image src="/images/qq.png" style="width: 20px;height: 20px;margin-right: 5px" />
               </view>
               <view class="weui-cell__bd weui-cell_primary">
                 <view catchtap="toModifyData" data-content="qq">QQ:{{result.qq}}</view>
@@ -48,7 +48,7 @@
             </view>
             <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
               <view class="weui-cell__hd">
-                <image src="/images/edit.png" style="width: 20px;height: 20px;margin-right: 5px" />
+                <image src="/images/github.png" style="width: 20px;height: 20px;margin-right: 5px" />
               </view>
               <view class="weui-cell__bd weui-cell_primary">
                 <view catchtap="toModifyData" data-content="github">Github{{result.github}}</view>

@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<import src="../common/foot.wxml"  />
+<import src="../common/foot.wxml" />
 <view class="page">
   <view class="page__hd">
   </view>
@@ -35,7 +35,9 @@
                 <view class="weui-textarea-counter">点击查看详情...</view>
                 <!--<text class="content weui-cell__ft">{{item.content}}</text>-->
               </view>
+
               <text class="title weui-cell__bd">{{item.status}}</text>
+
             </view>
           </view>
         </block>
@@ -57,6 +59,6 @@
         加载中...
       </loading>
     </view>
-    <template is="foot"  />
+    <template is="foot" />
   </view>
 </view>

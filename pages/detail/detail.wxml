@@ -19,22 +19,27 @@
           <view class="weui-media-box__title weui-media-box__title_in-text">{{pro_owner.id}}{{result.days}}天</view>
         </view>
         <block wx:if="{{pro_owner.objectId == ownerid}}">
-        <view class="weui-media-box weui-media-box_text">
-          <view class="weui-media-box__title weui-media-box__title_in-text">招募到的开发者：</view>
-          <block wx:for="{{people}}">
-            <view bindtap="userDetail" data-user="item" class="weui-media-box__title weui-media-box__title_in-text">{{item.nickName}}</view>
-          </block>
-        </view>
+          <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text">招募到的开发者：</view>
+            <block wx:for="{{people}}">
+              <view bindtap="userDetail" data-developerid="{{item.objectId}}" class="weui-media-box__title weui-media-box__title_in-text">{{item.nickName}}</view>
+            </block>
+          </view>
         </block>
         <block wx:else>
-        <view class="weui-btn-area">
-          <block wx:if="{{isJoinin}}">
-            <button class="weui-btn" type="primary" disabled="true">已参加</button>
-          </block>
-          <block wx:else>
-            <button bindtap="joinin" class="weui-btn" type="primary">参加项目</button>
-          </block>
-        </view>
+          <view class="weui-btn-area">
+            <block wx:if="{{pro_own.status=='开发中'}}">
+              <button class="weui-btn" type="warn" disabled="true">已开发中 请选择其他项目</button>
+            </block>
+            <block wx:else>
+              <block wx:if="{{isJoinin}}">
+                <button class="weui-btn" type="primary" disabled="true">已参加</button>
+              </block>
+              <block wx:else>
+                <button bindtap="joinin" class="weui-btn" type="primary">参加项目</button>
+              </block>
+            </block>
+          </view>
         </block>
       </view>
     </view>

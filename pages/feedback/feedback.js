@@ -1,4 +1,5 @@
 var util = require('../../utils/util.js');
+var common = require('../../utils/common.js');
 var Bmob = util.Bmob;
 var app = getApp()
 Page({

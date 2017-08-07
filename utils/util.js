@@ -55,7 +55,7 @@ function addPost(title, protype, budget, days, content, user, telnum, status) {
 }
 
 
-
+//添加个人资料
 function addPersonalData(userid,telnum,weixin,qq,github,content) {
   var Project = Bmob.Object.extend("personalData");
   var project = new Project();
@@ -83,7 +83,7 @@ function addPersonalData(userid,telnum,weixin,qq,github,content) {
 
 
 
-//news详细页面
+//项目详细页面
 function getDetail(objectId) {
   var Project = Bmob.Object.extend("project");
   //创建查询对象，入口参数是对象类的实例
@@ -106,7 +106,7 @@ function getDetail(objectId) {
   });
   return promise
 }
-
+//查询参加人员
 function getPeople(objectId) {
   var Project_User = Bmob.Object.extend("project_user");
   var user = new Bmob.Query(Bmob.User)
@@ -133,7 +133,7 @@ function getPeople(objectId) {
   return promise
 }
 
-//得到news列表
+//得到项目列表
 function getList() {
   var Project = Bmob.Object.extend("project");
   var query = new Bmob.Query(Project);
@@ -168,7 +168,7 @@ function getList() {
 
 
 
-
+//是否加入项目
 function isJoinin(objectId, userId) {
   //console.log(objectId)
   //console.log(userId)
@@ -209,7 +209,7 @@ function isJoinin(objectId, userId) {
   });
   return promise
 }
-
+//查询个人资料
 function getPersonalData(userId){
   var ret = false
   var personal = Bmob.Object.extend("personalData");
@@ -247,6 +247,120 @@ function getPersonalData(userId){
   return promise
 }
 
+//添加订单
+
+function addOrder(proid,developerid,userid,status){
+  var Order = Bmob.Object.extend("order");
+  var project = new Order();
+  project.set("userid", userid);
+  project.set("proid", proid);
+  project.set("developerid", developerid);
+  project.set("status", status);
+  return new Promise((resolve, reject) => {
+    //添加数据，第一个入口参数是null
+    project.save(null, {
+      success: function (result) {
+        // 添加成功，返回成功之后的objectId（注意：返回的属性名字是id，不是objectId），你还可以在Bmob的Web管理后台看到对应的数据
+        console.log("创建成功, objectId:" + result.id);
+        resolve({
+          data: true
+        })
+      },
+      error: function (result, error) {
+        // 添加失败
+        console.log('创建失败');
+        resolve({
+          data: false
+        })
+      }
+    });
+  });
+}
+
+function getSelectedStatus(proid,developerid,userid){
+  var Order = Bmob.Object.extend("order");
+  var query = new Bmob.Query(Order);
+  var promise = new Promise(function (resolve, reject) {
+    //查询单条数据，第一个参数是这条数据的objectId值
+    query.equalTo("userid", userid)
+    query.equalTo("developerid", developerid)
+    query.equalTo("proid", proid)
+    query.find({
+      success: function (results) {
+        // 查询成功，调用get方法获取对应属性的值
+        console.log("order:共查询到 " + results.length + " 条记录");
+        // 循环处理查询到的数据
+        if (results.length > 0) {
+          resolve({
+            data: results[0],
+            ret: true
+          })
+        } else {
+          resolve({
+            data: null,
+            ret: false
+          })
+        }
+
+      },
+      error: function (object, error) {
+        // 查询失败
+        resolve({
+          data: null,
+          ret: false
+        })
+      }
+    })
+  });
+  return promise
+}
+
+function getProjectStatus(proid) {
+  var Project = Bmob.Object.extend("project");
+  var query = new Bmob.Query(Project);
+  var promise = new Promise(function (resolve, reject) {
+    //查询单条数据，第一个参数是这条数据的objectId值
+    query.get(proid,{
+      success: function (result) {
+        // 循环处理查询到的数据
+          resolve({
+            data: result,
+            ret: true
+          })
+
+      },
+      error: function (object, error) {
+        // 查询失败
+        resolve({
+          data: null,
+          ret: false
+        })
+      }
+    })
+  });
+  return promise
+}
+
+function updateProjectStatus(proid,status){
+  var Project = Bmob.Object.extend("project");
+  var query = new Bmob.Query(Project);
+
+  // 这个 id 是要修改条目的 id，你在这个存储并成功时可以获取到，请看前面的文档
+  query.get(proid, {
+    success: function (result) {
+      // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+      result.set('status', status);
+      result.save();
+
+      // The object was retrieved successfully.
+    },
+    error: function (object, error) {
+
+    }
+  });
+}
+
+
 module.exports = {
   formatTime: formatTime,
   addPost: addPost,
@@ -256,5 +370,9 @@ module.exports = {
   isJoinin: isJoinin,
   getPersonalData: getPersonalData,
   addPersonalData: addPersonalData,
+  addOrder:addOrder,
+  getSelectedStatus: getSelectedStatus,
+  updateProjectStatus: updateProjectStatus,
+  getProjectStatus: getProjectStatus,
   Bmob: Bmob
 }

@@ -15,8 +15,10 @@ Page({
     userInfo: {},
     people: {},
     isJoinin: false,
-    own:{},
-    ownerid:null,
+    own: {},
+    ownerid: null,
+    proid: null,
+    pro_own:{},
   },
 
   /**
@@ -29,16 +31,21 @@ Page({
     var op = options.op
     var that = this;
     that.setData({
-        ownerid:currentUser.id
+      ownerid: currentUser.id,
+      proid: id
     });
     util.getDetail(id).then(res => {
 
       that.setData({
         result: res.data,
-        pro_owner:res.user
+        pro_owner: res.user
       });
     });
-  
+    util.getProjectStatus(id).then(res => {
+      that.setData({
+        pro_own: res.data,
+      });
+    });
     util.getPeople(id).then(res => {
 
       that.setData({
@@ -146,11 +153,10 @@ Page({
   },
 
 
-  userDetail:function(e){
-      var user = e.target.dataset.user;
-      console.log("查询user: " + user.get("nickName"));
-      wx.navigateTo({
-        url: '../userDetail/userDetail?user='+user
-      })
+  userDetail: function (e) {
+    var developerid = e.target.dataset.developerid;
+    wx.navigateTo({
+      url: '../userDetail/userDetail?developerid=' + developerid + "&proid=" + this.data.proid
+    })
   },
 })

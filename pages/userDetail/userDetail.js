@@ -9,24 +9,48 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userInfo:{},
-    result:{}
+    userInfo: {},
+    result: {},
+    selected: false,
+    proid: null,
+    developerid: null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var currentUser = Bmob.User.current()
+    var User = Bmob.Object.extend("_User");
+    var query = new Bmob.Query(User);
     var that = this;
-    var user = options.user;
-    var userid = user.get("objectId")
-    console.log(user.get("nickName"))
+    var developerid = options.developerid;
+    var proid = options.proid;
     that.setData({
-      userInfo:user
+      developerid: options.developerid,
+      proid: options.proid
     });
-    util.getPersonalData(userid).then(res => {
+    query.get(developerid, {
+      success: function (result) {
+        // 查询成功，调用get方法获取对应属性的值
+        that.setData({
+          userInfo: result
+        });
+      },
+      error: function (object, error) {
+        // 查询失败
+      }
+    });
+
+    util.getPersonalData(developerid).then(res => {
       that.setData({
         result: res.data
+      });
+    });
+    
+    util.getSelectedStatus(proid, developerid, currentUser.id).then(res => {
+      that.setData({
+        selected: res.ret
       });
     });
   },
@@ -78,5 +102,23 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  //选择开发者
+  select: function (e) {
+    var that = this
+    var currentUser = Bmob.User.current()
+    var proid = this.data.proid
+    var developerid = this.data.developerid
+    util.addOrder(proid, developerid, currentUser.id, "developing").then(res => {
+      that.setData({
+        selected: res.data
+      });
+
+    });
+    util.updateProjectStatus(proid,"开发中").then(res =>{
+        console.log("更新状态成功")
+    });
+  },
+
+
 })
