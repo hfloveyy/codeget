@@ -56,7 +56,7 @@ function addPost(title, protype, budget, days, content, user, telnum, status) {
 
 
 //添加个人资料
-function addPersonalData(userid,telnum,weixin,qq,github,content) {
+function addPersonalData(userid, telnum, weixin, qq, github, content) {
   var Project = Bmob.Object.extend("personalData");
   var project = new Project();
   project.set("userid", userid);
@@ -172,8 +172,8 @@ function getList() {
 function isJoinin(objectId, userId) {
   //console.log(objectId)
   //console.log(userId)
-  
-  
+
+
   var ret = false;
   var Project = Bmob.Object.extend("project_user");
   //创建查询对象，入口参数是对象类的实例
@@ -184,7 +184,7 @@ function isJoinin(objectId, userId) {
     query.find({
       success: function (results) {
         // 查询成功，调用get方法获取对应属性的值
-        
+
         //console.log(results.length)
         for (var i = 0; i < results.length; i++) {
           var object = results[i];
@@ -210,30 +210,30 @@ function isJoinin(objectId, userId) {
   return promise
 }
 //查询个人资料
-function getPersonalData(userId){
+function getPersonalData(userId) {
   var ret = false
   var personal = Bmob.Object.extend("personalData");
   var query = new Bmob.Query(personal);
   var promise = new Promise(function (resolve, reject) {
     //查询单条数据，第一个参数是这条数据的objectId值
-    query.equalTo("userid",userId)
+    query.equalTo("userid", userId)
     query.find({
       success: function (results) {
         // 查询成功，调用get方法获取对应属性的值
         console.log("共查询到 " + results.length + " 条记录");
         // 循环处理查询到的数据
-        if(results.length>0){
+        if (results.length > 0) {
           resolve({
             data: results[0],
             ret: true
           })
-        }else{
+        } else {
           resolve({
             data: null,
             ret: false
           })
         }
-        
+
       },
       error: function (object, error) {
         // 查询失败
@@ -249,13 +249,12 @@ function getPersonalData(userId){
 
 //添加订单
 
-function addOrder(proid,developerid,userid,status){
+function addOrder(proid, developerid, userid) {
   var Order = Bmob.Object.extend("order");
   var project = new Order();
   project.set("userid", userid);
   project.set("proid", proid);
   project.set("developerid", developerid);
-  project.set("status", status);
   return new Promise((resolve, reject) => {
     //添加数据，第一个入口参数是null
     project.save(null, {
@@ -277,7 +276,7 @@ function addOrder(proid,developerid,userid,status){
   });
 }
 
-function getSelectedStatus(proid,developerid,userid){
+function getSelectedStatus(proid, developerid, userid) {
   var Order = Bmob.Object.extend("order");
   var query = new Bmob.Query(Order);
   var promise = new Promise(function (resolve, reject) {
@@ -320,13 +319,13 @@ function getProjectStatus(proid) {
   var query = new Bmob.Query(Project);
   var promise = new Promise(function (resolve, reject) {
     //查询单条数据，第一个参数是这条数据的objectId值
-    query.get(proid,{
+    query.get(proid, {
       success: function (result) {
         // 循环处理查询到的数据
-          resolve({
-            data: result,
-            ret: true
-          })
+        resolve({
+          data: result,
+          ret: true
+        })
 
       },
       error: function (object, error) {
@@ -341,24 +340,30 @@ function getProjectStatus(proid) {
   return promise
 }
 
-function updateProjectStatus(proid,status){
+function updateProjectStatus(proid, status) {
   var Project = Bmob.Object.extend("project");
   var query = new Bmob.Query(Project);
-
   // 这个 id 是要修改条目的 id，你在这个存储并成功时可以获取到，请看前面的文档
-  query.get(proid, {
-    success: function (result) {
-      // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
-      result.set('status', status);
-      result.save();
+  var promise = new Promise(function (resolve, reject) {
+    query.get(proid, {
+      success: function (result) {
+        // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+        result.set('status', status);
+        result.save();
+        resolve({
+          data: result,
+          ret: true
+        })
+        // The object was retrieved successfully.
+      },
+      error: function (object, error) {
 
-      // The object was retrieved successfully.
-    },
-    error: function (object, error) {
-
-    }
+      }
+    })
   });
+  return promise
 }
+
 
 
 module.exports = {
@@ -370,9 +375,10 @@ module.exports = {
   isJoinin: isJoinin,
   getPersonalData: getPersonalData,
   addPersonalData: addPersonalData,
-  addOrder:addOrder,
+  addOrder: addOrder,
   getSelectedStatus: getSelectedStatus,
   updateProjectStatus: updateProjectStatus,
   getProjectStatus: getProjectStatus,
+  updateProjectStatus: updateProjectStatus,
   Bmob: Bmob
 }

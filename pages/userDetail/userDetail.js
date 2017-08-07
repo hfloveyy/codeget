@@ -13,7 +13,8 @@ Page({
     result: {},
     selected: false,
     proid: null,
-    developerid: null
+    developerid: null,
+    pro_own:{}
   },
 
   /**
@@ -48,9 +49,9 @@ Page({
       });
     });
     
-    util.getSelectedStatus(proid, developerid, currentUser.id).then(res => {
+    util.getProjectStatus(proid, developerid, currentUser.id).then(res => {
       that.setData({
-        selected: res.ret
+        pro_own: res.data
       });
     });
   },
@@ -109,16 +110,28 @@ Page({
     var currentUser = Bmob.User.current()
     var proid = this.data.proid
     var developerid = this.data.developerid
-    util.addOrder(proid, developerid, currentUser.id, "developing").then(res => {
+    util.addOrder(proid, developerid, currentUser.id).then(res => {
       that.setData({
         selected: res.data
       });
 
     });
     util.updateProjectStatus(proid,"开发中").then(res =>{
-        console.log("更新状态成功")
+      that.setData({
+        pro_own: res.data
+      });
+      
     });
   },
-
+  
+  complete: function(e){
+    var that = this;
+    var proid = this.data.proid;
+    util.updateProjectStatus(proid, "完成").then(res => {
+      that.setData({
+        pro_own: res.data
+      });
+    });
+  },
 
 })

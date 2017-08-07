@@ -70,7 +70,7 @@ Page({
     var that= this;
     return {
       title: 'Bmob 聊天室',
-      path: 'pages/interface/chatroom/chatroom',
+      path: 'pages/chatroom/chatroom',
       success: function (res) {
         // 转发成功
         console.log('成功', res)
