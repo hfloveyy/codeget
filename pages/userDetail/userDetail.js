@@ -1,7 +1,11 @@
 // userDetail.js
 var util = require('../../utils/util.js');
+var common = require('../../utils/common.js');
+
 var Bmob = util.Bmob;
 var app = getApp()
+
+
 
 Page({
 
@@ -114,14 +118,42 @@ Page({
       that.setData({
         selected: res.data
       });
-
+      
     });
     util.updateProjectStatus(proid, "开发中").then(res => {
       that.setData({
         pro_own: res.data
       });
-
     });
+
+    var fId = e.detail.formId;
+    console.log(fId)
+    var temp = {
+      "touser": currentUser.get("openid"),
+      "template_id": "fczEzaxPxcLRINlLk8VxYifX6cXAyRSz0m9p37CtSGM",
+      "page": "",
+      "form_id": fId,
+      "data": {
+        "keyword1": {
+          "value": "SDK测试内容",
+          "color": "#173177"
+        },
+        "keyword2": {
+          "value": "199.00"
+        },
+        "keyword3": {
+          "value": "123456789"
+        }
+      },
+      "emphasis_keyword": "keyword1.DATA"
+    }
+    Bmob.sendMessage(temp).then(function (obj) {
+      console.log('发送成功')
+    },
+      function (err) {
+        console.log(err)
+        common.showTip('失败' + err)
+      });
   },
 
   complete: function (e) {
@@ -137,8 +169,10 @@ Page({
   chatroom: function (e) {
     var currentUser = Bmob.User.current()
     wx.navigateTo({
-      url: '../chatroom/chatroom?ownerid='+currentUser.id+"&developerid="+this.data.developerid
+      url: '../chatroom/chatroom?ownerid=' + currentUser.id + "&developerid=" + this.data.developerid
     })
-  }
+  },
+
+  
 
 })
