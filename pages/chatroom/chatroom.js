@@ -1,11 +1,13 @@
-var BmobSocketIo = require('../../../utils/bmobSocketIo.js').BmobSocketIo;
-var Bmob = require('../../../utils/bmob.js');
-var that = this;
+var BmobSocketIo = require('../../utils/bmobSocketIo.js').BmobSocketIo;
+var util = require('../../utils/util.js');
+var Bmob = util.Bmob;
+
 
 var app = getApp();
 
-
-
+var ownerid = null;
+var developerid = null;
+var chatTableName = ""
 /**
  * 生成一条聊天室的消息的唯一 ID
  */
@@ -38,7 +40,7 @@ Page({
    */
   data: {
     messages: [],
-    inputContent: '欢迎见到大家',
+    inputContent: '',
     lastMessageId: 'none',
     msgObjectId: "",
     objectId: ""
@@ -48,7 +50,7 @@ Page({
    * 页面渲染完成后，启动聊天室
    * */
   onReady() {
-    wx.setNavigationBarTitle({ title: 'Bmob聊天室' });
+    wx.setNavigationBarTitle({ title: '客户开发者沟通频道' });
 
     var pageReady = app.globalData.pageReady;
     console.log(pageReady);
@@ -67,16 +69,16 @@ Page({
   },
 
   onShareAppMessage: function () {
-    var that= this;
+    var that = this;
     return {
-      title: 'Bmob 聊天室',
-      path: 'pages/chatroom/chatroom',
+      title: '沟通频道',
+      path: 'pages/chatroom/chatroom?ownerid=' + ownerid + "&developerid=" + developerid,
       success: function (res) {
         // 转发成功
         console.log('成功', res)
 
         var currentUser = Bmob.User.current();
-        that.pushMessage(createSystemMessage('恭喜' + currentUser.get('nickName')+'把聊天室成功分享给他人...'));
+        //that.pushMessage(createSystemMessage('恭喜' + currentUser.get('nickName')+'把聊天室成功分享给他人...'));
         wx.getShareInfo({
           shareTicket: res.shareTickets,
           success(res) {
@@ -100,11 +102,14 @@ Page({
       // this.enter();
     }
   },
-  onLoad() {
+  onLoad(options) {
     console.log('jjjjjj');
     var that = this;
-
-
+    ownerid = options.ownerid;
+    developerid = options.developerid
+    console.log(ownerid+"-"+developerid)
+    chatTableName = ownerid +developerid
+    //chatTableName = "chat_"+ownerid
   },
 
   /**
@@ -148,7 +153,7 @@ Page({
 
     var that = this;
 
-    that.pushMessage(createSystemMessage('欢迎加入群聊...'));
+    that.pushMessage(createSystemMessage('欢迎加入码赚沟通频道...'));
 
     //记录进入房间
     welcome(that);
@@ -161,17 +166,17 @@ Page({
     //初始连接socket.io服务器后，需要监听的事件都写在这个函数内
     BmobSocketIo.onInitListen = function () {
       //订阅GameScore表的数据更新事件
-      BmobSocketIo.updateTable("Chat"); //聊天记录表
+      BmobSocketIo.updateTable(chatTableName); //聊天记录表
       BmobSocketIo.updateTable("welcome");//欢迎进入表
       that.tunnel = true;
-      that.pushMessage(createSystemMessage('成功加入群聊...'));
+      that.pushMessage(createSystemMessage('成功加入码赚沟通频道...'));
 
     };
 
     //监听服务器返回的更新表的数据
     BmobSocketIo.onUpdateTable = function (tablename, data) {
 
-      if (tablename == "Chat") {
+      if (tablename == chatTableName) {
         that.pushMessage(createUserMessage(data.content, data, data.own === that.data.objectId));
       }
 
@@ -188,7 +193,7 @@ Page({
     if (!this.pageReady) {
       BmobSocketIo.init();
       app.globalData.pageReady = true;
-    }else{
+    } else {
       //第二次进来
       that.tunnel = true;
     }
@@ -282,7 +287,7 @@ Page({
     var objectId = this.data.objectId;
 
     //添加一条记录
-    var Diary = Bmob.Object.extend("Chat");
+    var Diary = Bmob.Object.extend(chatTableName);
     var diary = new Diary();
 
     UserModel.id = objectId;
@@ -372,7 +377,7 @@ function loadDefault(t) {
 
   var that = t;
   //进入聊天室先加载之前最后3条聊天记录
-  var Diary = Bmob.Object.extend("Chat");
+  var Diary = Bmob.Object.extend(chatTableName);
   var query = new Bmob.Query(Diary);
   query.descending("createdAt");
   query.limit(3);

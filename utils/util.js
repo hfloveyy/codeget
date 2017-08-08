@@ -209,6 +209,44 @@ function isJoinin(objectId, userId) {
   });
   return promise
 }
+
+
+
+//是否被选择
+function isSelected(proId, userId,developerId) {
+
+  var ret = false;
+  var Order = Bmob.Object.extend("order");
+  //创建查询对象，入口参数是对象类的实例
+  var query = new Bmob.Query(Order);
+  var promise = new Promise(function (resolve, reject) {
+    query.equalTo("proid", proId)
+    query.equalTo("userid", userId)
+    query.equalTo("developerid", developerId)
+    //查询单条数据，第一个参数是这条数据的objectId值
+    query.find({
+      success: function (results) {
+        // 查询成功，调用get方法获取对应属性的值
+
+        //console.log(results.length)
+        if (results.length > 0) {
+          var object = results[i];
+          ret = true;
+        }
+        resolve({
+          data: ret
+        })
+      },
+      error: function (object, error) {
+        // 查询失败
+        resolve({
+          data: ret
+        })
+      }
+    })
+  });
+  return promise
+}
 //查询个人资料
 function getPersonalData(userId) {
   var ret = false
@@ -373,6 +411,7 @@ module.exports = {
   getDetail: getDetail,
   getPeople: getPeople,
   isJoinin: isJoinin,
+  isSelected: isSelected,
   getPersonalData: getPersonalData,
   addPersonalData: addPersonalData,
   addOrder: addOrder,

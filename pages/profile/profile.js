@@ -14,6 +14,7 @@ Page({
     userInfo: {},
     myproject: [],
     join_in_porject: [],
+    isSelected: [],
     currentId: 0,
   },
 
@@ -95,6 +96,26 @@ Page({
         console.log("查询失败: " + error.code + " " + error.message);
       }
     });
+    //查询被选中的项目
+    var Order = Bmob.Object.extend("order");
+    var query = new Bmob.Query(Order);
+    query.equalTo("developerid", currentUser.id)
+    //查询单条数据，第一个参数是这条数据的objectId值
+    query.find({
+      success: function (results) {
+        // 查询成功，调用get方法获取对应属性的值
+        console.log(results)
+        that.setData({
+          isSelected: results
+        })
+      },
+      error: function (object, error) {
+        // 查询失败
+      }
+    });
+
+
+
   },
   publish_action: function (e) {
     var id = e.currentTarget.dataset.id

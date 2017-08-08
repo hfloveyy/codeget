@@ -9,7 +9,8 @@
     "pages/about/about",
     "pages/rules/rules",
     "pages/feedback/feedback",
-    "pages/userDetail/userDetail"
+    "pages/userDetail/userDetail",
+    "pages/chatroom/chatroom"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -19,6 +19,7 @@ Page({
     ownerid: null,
     proid: null,
     pro_own:{},
+    isSelected:false
   },
 
   /**
@@ -55,6 +56,11 @@ Page({
     util.isJoinin(id, currentUser.id).then(res => {
       that.setData({
         isJoinin: res.data,
+      });
+    });
+    util.isSelected(id, currentUser.id,pro_owner.id).then(res => {
+      that.setData({
+        isSelected: res.data,
       });
     });
     //console.log(that.data.isJoinin);
@@ -159,4 +165,12 @@ Page({
       url: '../userDetail/userDetail?developerid=' + developerid + "&proid=" + this.data.proid
     })
   },
+
+  chatroom: function (e) {
+    var currentUser = Bmob.User.current()
+    wx.navigateTo({
+      url: '../chatroom/chatroom?ownerid=' + this.data.ownerid + "&developerid=" + currentUser.id
+    })
+  }
+
 })

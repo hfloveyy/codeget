@@ -14,7 +14,7 @@ Page({
     selected: false,
     proid: null,
     developerid: null,
-    pro_own:{}
+    pro_own: {}
   },
 
   /**
@@ -48,7 +48,7 @@ Page({
         result: res.data
       });
     });
-    
+
     util.getProjectStatus(proid, developerid, currentUser.id).then(res => {
       that.setData({
         pro_own: res.data
@@ -116,15 +116,15 @@ Page({
       });
 
     });
-    util.updateProjectStatus(proid,"开发中").then(res =>{
+    util.updateProjectStatus(proid, "开发中").then(res => {
       that.setData({
         pro_own: res.data
       });
-      
+
     });
   },
-  
-  complete: function(e){
+
+  complete: function (e) {
     var that = this;
     var proid = this.data.proid;
     util.updateProjectStatus(proid, "完成").then(res => {
@@ -133,5 +133,12 @@ Page({
       });
     });
   },
+
+  chatroom: function (e) {
+    var currentUser = Bmob.User.current()
+    wx.navigateTo({
+      url: '../chatroom/chatroom?ownerid='+currentUser.id+"&developerid="+this.data.developerid
+    })
+  }
 
 })
