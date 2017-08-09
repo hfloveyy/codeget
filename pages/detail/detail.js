@@ -1,7 +1,41 @@
 // detail.js
 var util = require('../../utils/util.js');
+var common = require('../../utils/common.js');
 var Bmob = util.Bmob;
 var app = getApp()
+
+//加入项目通知 给客户发
+function newOneJoin(e, pro_title, user,nickName) {
+  var fId = e.detail.formId;
+  console.log(user.get("openid"))
+  var temp = {
+    "touser": user.get("openid"),
+    "template_id": "fczEzaxPxcLRINlLk8VxYifX6cXAyRSz0m9p37CtSGM",
+    "page": "",
+    "form_id": fId,
+    "data": {
+      "keyword1": {
+        "value": pro_title,
+        "color": "#173177"
+      },
+      "keyword2": {
+        "value": nickName
+      },
+      "keyword3": {
+        "value": util.formatTime(new Date())
+      }
+    },
+    "emphasis_keyword": "keyword1.DATA"
+  }
+  Bmob.sendMessage(temp).then(function (obj) {
+    console.log('发送成功')
+  },
+    function (err) {
+      console.log(err)
+      common.showTip('失败' + err)
+    });
+}
+
 
 
 Page({
@@ -19,7 +53,9 @@ Page({
     ownerid: null,
     proid: null,
     pro_own:{},
-    isSelected:false
+    isSelected:false,
+    pro_owner:{},
+    owner:{}
   },
 
   /**
@@ -27,12 +63,10 @@ Page({
    */
   onLoad: function (options) {
     var currentUser = Bmob.User.current();
-    var pro_owner = new Bmob.User()
     var id = options.id
     var op = options.op
     var that = this;
     that.setData({
-      ownerid: currentUser.id,
       proid: id
     });
     util.getDetail(id).then(res => {
@@ -58,11 +92,17 @@ Page({
         isJoinin: res.data,
       });
     });
-    util.isSelected(id, currentUser.id,pro_owner.id).then(res => {
+    util.isSelected(id, currentUser.id,that.data.pro_owner.id).then(res => {
       that.setData({
         isSelected: res.data,
       });
     });
+    util.getUser(that.data.pro_owner.id).then(res =>{
+      that.setData({
+        owner: res.data,
+      });
+    })
+    console.log(that.data.owner)
     //console.log(that.data.isJoinin);
 
 
@@ -122,7 +162,7 @@ Page({
   onShareAppMessage: function () {
 
   },
-  joinin: function () {
+  joinin: function (e) {
     var that = this
     var currentUser = Bmob.User.current();
     var Project_User = Bmob.Object.extend("project_user");
@@ -156,6 +196,7 @@ Page({
         console.log("查询失败: " + error.code + " " + error.message);
       }
     })
+    newOneJoin(e,that.data.result.get("title"),that.data.owner,currentUser.get("nickName"))
   },
 
 

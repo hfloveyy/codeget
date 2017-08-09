@@ -59,6 +59,6 @@
         加载中...
       </loading>
     </view>
-    <template is="foot" />
   </view>
+  
 </view>

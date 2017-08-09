@@ -7,6 +7,65 @@ var app = getApp()
 
 
 
+function youAreSelected(e, pro_title, pro_content,userId){
+  var fId = e.detail.formId;
+  console.log("youAreSelected")
+  var temp = {
+    "touser": userId,
+    "template_id": "bZP0ZnUFSKQ8kkf58HxEsv1ZsFXb2asrFTwxqtlicmQ",
+    "page": "",
+    "form_id": fId,
+    "data": {
+      "keyword1": {
+        "value": pro_title,
+        "color": "#173177"
+      },
+      "keyword2": {
+        "value": pro_content
+      },
+      "keyword3": {
+        "value": util.formatTime(new Date())
+      }
+    },
+    "emphasis_keyword": "keyword1.DATA"
+  }
+  Bmob.sendMessage(temp).then(function (obj) {
+    console.log('发送成功')
+  },
+    function (err) {
+      console.log(err)
+      common.showTip('失败' + err)
+    });
+}
+
+function completeMsg(e, pro_title) {
+  var fId = e.detail.formId;
+  console.log(fId)
+  var temp = {
+    "touser": user.get("openid"),
+    "template_id": "SzEtF4kAoDd9e9hU4KRyhbk5YHGn7T_6Hs6Q-W0gw5g",
+    "page": "",
+    "form_id": fId,
+    "data": {
+      "keyword1": {
+        "value": pro_title,
+        "color": "#173177"
+      },
+      "keyword2": {
+        "value": util.formatTime(new Date())
+      }
+    },
+    "emphasis_keyword": "keyword1.DATA"
+  }
+  Bmob.sendMessage(temp).then(function (obj) {
+    console.log('发送成功')
+  },
+    function (err) {
+      console.log(err)
+      common.showTip('失败' + err)
+    });
+}
+
 Page({
 
   /**
@@ -125,35 +184,8 @@ Page({
         pro_own: res.data
       });
     });
-
-    var fId = e.detail.formId;
-    console.log(fId)
-    var temp = {
-      "touser": currentUser.get("openid"),
-      "template_id": "fczEzaxPxcLRINlLk8VxYifX6cXAyRSz0m9p37CtSGM",
-      "page": "",
-      "form_id": fId,
-      "data": {
-        "keyword1": {
-          "value": "SDK测试内容",
-          "color": "#173177"
-        },
-        "keyword2": {
-          "value": "199.00"
-        },
-        "keyword3": {
-          "value": "123456789"
-        }
-      },
-      "emphasis_keyword": "keyword1.DATA"
-    }
-    Bmob.sendMessage(temp).then(function (obj) {
-      console.log('发送成功')
-    },
-      function (err) {
-        console.log(err)
-        common.showTip('失败' + err)
-      });
+    youAreSelected(e, that.data.pro_own.get("titile"), that.data.pro_own.get("content"),developerid)
+    
   },
 
   complete: function (e) {
@@ -164,6 +196,7 @@ Page({
         pro_own: res.data
       });
     });
+    completeMsg(e, that.data.pro_own.get("titile"))
   },
 
   chatroom: function (e) {

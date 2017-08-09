@@ -401,7 +401,27 @@ function updateProjectStatus(proid, status) {
   });
   return promise
 }
+function getUser(userId){
+  var User = Bmob.Object.extend("_User");
+  var query = new Bmob.Query(User);
+  // 这个 id 是要修改条目的 id，你在这个存储并成功时可以获取到，请看前面的文档
+  var promise = new Promise(function (resolve, reject) {
+    query.get(userId, {
+      success: function (result) {
+        // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+        resolve({
+          data: result,
+          ret: true
+        })
+        // The object was retrieved successfully.
+      },
+      error: function (object, error) {
 
+      }
+    })
+  });
+  return promise
+}
 
 
 module.exports = {
@@ -419,5 +439,6 @@ module.exports = {
   updateProjectStatus: updateProjectStatus,
   getProjectStatus: getProjectStatus,
   updateProjectStatus: updateProjectStatus,
+  getUser: getUser,
   Bmob: Bmob
 }

@@ -49,8 +49,8 @@
           <button class="weui-btn" type="primary" disabled="true">项目已完成</button>
         </block>
         <block wx:else>
-          <form bindsubmit="submitInfo" report-submit='true'>
-            <button form-type="submit" bindtap="select" class="weui-btn" type="primary">选择该开发者/团队</button>
+          <form bindsubmit="select" report-submit='true'>
+            <button form-type="submit" bindtap="" class="weui-btn" type="primary">选择该开发者/团队</button>
           </form>
         </block>
       </view>

@@ -51,7 +51,7 @@
                 <image src="/images/github.png" style="width: 20px;height: 20px;margin-right: 5px" />
               </view>
               <view class="weui-cell__bd weui-cell_primary">
-                <view catchtap="toModifyData" data-content="github">Github{{result.github}}</view>
+                <view catchtap="toModifyData" data-content="github">Github:{{result.github}}</view>
               </view>
               <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </view>
