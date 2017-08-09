@@ -4,12 +4,13 @@ var common = require('../../utils/common.js');
 var Bmob = util.Bmob;
 var app = getApp()
 
+
+
 //加入项目通知 给客户发
-function newOneJoin(e, pro_title, user,nickName) {
+function newOneJoin(e, pro_title, user, nickName) {
   var fId = e.detail.formId;
-  console.log(user.get("openid"))
   var temp = {
-    "touser": user.get("openid"),
+    "touser": user,
     "template_id": "fczEzaxPxcLRINlLk8VxYifX6cXAyRSz0m9p37CtSGM",
     "page": "",
     "form_id": fId,
@@ -49,13 +50,13 @@ Page({
     userInfo: {},
     people: {},
     isJoinin: false,
-    own: {},
+    owner: {},
+    trueowner: {},
     ownerid: null,
     proid: null,
-    pro_own:{},
-    isSelected:false,
-    pro_owner:{},
-    owner:{}
+    pro_own: {},
+    isSelected: false,
+    //owner: new Bmob.User()
   },
 
   /**
@@ -67,20 +68,21 @@ Page({
     var op = options.op
     var that = this;
     that.setData({
-      proid: id
+      proid: id,
+      ownerid:currentUser.id
     });
     util.getDetail(id).then(res => {
-
       that.setData({
         result: res.data,
-        pro_owner: res.user
+        owner: res.user
       });
     });
+    /*
     util.getProjectStatus(id).then(res => {
       that.setData({
         pro_own: res.data,
       });
-    });
+    });*/
     util.getPeople(id).then(res => {
 
       that.setData({
@@ -92,18 +94,19 @@ Page({
         isJoinin: res.data,
       });
     });
-    util.isSelected(id, currentUser.id,that.data.pro_owner.id).then(res => {
+    util.isSelected(id, that.data.owner.id, currentUser.id).then(res => {
       that.setData({
         isSelected: res.data,
       });
     });
-    util.getUser(that.data.pro_owner.id).then(res =>{
+    
+    util.getUser(that.data.owner.id).then(res => {
       that.setData({
-        owner: res.data,
+        trueowner: res.data,
       });
     })
-    console.log(that.data.owner)
-    //console.log(that.data.isJoinin);
+
+    
 
 
     /**
@@ -164,7 +167,7 @@ Page({
   },
   joinin: function (e) {
     var that = this
-    var currentUser = Bmob.User.current();
+    var currentUser = Bmob.User.current(); 
     var Project_User = Bmob.Object.extend("project_user");
     var puQuery = new Bmob.Query(Project_User);
     puQuery.equalTo("user_id", currentUser.id);
@@ -172,7 +175,7 @@ Page({
       success: function (results) {
         for (var i = 0; i < results.length; i++) {
           var object = results[i];
-          console.log(object.get('pro_id'))
+          //console.log(object.get('pro_id'))
           if (object.get('pro_id') == that.data.result.id) {
             that.setData({
               hidden: true
@@ -180,13 +183,16 @@ Page({
             return
           }
         }
+        //console.log(that.data.trueowner.get("objectId"))
         var pro_user = new Project_User();
         pro_user.set("user_id", currentUser.id)
         pro_user.set("pro_id", that.data.result.id)
         pro_user.save().then(function (object) {
+          //newOneJoin(e, that.data.result.get("title"), that.data.trueowner.get("openid"), currentUser.get("nickName"))
           wx.showToast({
             title: '参加项目成功!',
           });
+          
           wx.switchTab({
             url: '../profile/profile'
           });
@@ -196,7 +202,7 @@ Page({
         console.log("查询失败: " + error.code + " " + error.message);
       }
     })
-    newOneJoin(e,that.data.result.get("title"),that.data.owner,currentUser.get("nickName"))
+    
   },
 
 
@@ -210,7 +216,7 @@ Page({
   chatroom: function (e) {
     var currentUser = Bmob.User.current()
     wx.navigateTo({
-      url: '../chatroom/chatroom?ownerid=' + this.data.ownerid + "&developerid=" + currentUser.id
+      url: '../chatroom/chatroom?ownerid=' + this.data.trueowner.id + "&developerid=" + currentUser.id
     })
   }
 

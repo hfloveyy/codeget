@@ -16,6 +16,8 @@ Page({
     join_in_porject: [],
     isSelected: [],
     currentId: 0,
+    ownerid:null,
+    owner:{}
   },
 
   /**
@@ -104,7 +106,7 @@ Page({
     query.find({
       success: function (results) {
         // 查询成功，调用get方法获取对应属性的值
-        console.log(results)
+        console.log("被选中：共查询到 " + results.length + " 条记录");
         that.setData({
           isSelected: results
         })
@@ -170,5 +172,25 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  chatroom: function (e) {
+    var id = e.currentTarget.dataset.id;
+    console.log(id)
+    console.log(id)
+    console.log(id)
+    console.log(id)
+    
+    util.getDetail(id).then(res => {
+      that.setData({
+        result: res.data,
+        owner: res.user
+      });
+    });
+    
+    var currentUser = Bmob.User.current()
+    wx.navigateTo({
+      url: '../chatroom/chatroom?ownerid=' + this.data.owner.id + "&developerid=" + currentUser.id
+    })
   }
 })

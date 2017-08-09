@@ -93,6 +93,7 @@ function getDetail(objectId) {
     query.get(objectId, {
       success: function (result) {
         // 查询成功，调用get方法获取对应属性的值
+        console.log(result.get("objectId"));
         resolve({
           data: result,
           user: result.get("user")
@@ -119,7 +120,6 @@ function getPeople(objectId) {
     user.find({
       success: function (results) {
         console.log(results)
-
         resolve({
           data: results
         })
@@ -230,7 +230,7 @@ function isSelected(proId, userId,developerId) {
 
         //console.log(results.length)
         if (results.length > 0) {
-          var object = results[i];
+          var object = results[0];
           ret = true;
         }
         resolve({
@@ -402,13 +402,14 @@ function updateProjectStatus(proid, status) {
   return promise
 }
 function getUser(userId){
+  console.log(userId)
   var User = Bmob.Object.extend("_User");
   var query = new Bmob.Query(User);
-  // 这个 id 是要修改条目的 id，你在这个存储并成功时可以获取到，请看前面的文档
+
   var promise = new Promise(function (resolve, reject) {
     query.get(userId, {
       success: function (result) {
-        // 回调中可以取得这个 GameScore 对象的一个实例，然后就可以修改它了
+
         resolve({
           data: result,
           ret: true

@@ -5,6 +5,7 @@
   <view class="page__bd">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">项目类型：{{result.protype}}</view>
+      <view class="weui-panel__hd">客户：{{trueowner.nickName}}</view>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">项目需求：</view>
@@ -18,7 +19,7 @@
           <view class="weui-media-box__title weui-media-box__title_in-text">项目周期：</view>
           <view class="weui-media-box__title weui-media-box__title_in-text">{{pro_owner.id}}{{result.days}}天</view>
         </view>
-        <block wx:if="{{pro_owner.objectId == ownerid}}">
+        <block wx:if="{{owner.objectId == ownerid}}">
           <view class="weui-media-box weui-media-box_text">
             <view class="weui-media-box__title weui-media-box__title_in-text">招募到的开发者：</view>
             <block wx:for="{{people}}">
@@ -28,7 +29,7 @@
         </block>
         <block wx:else>
           <view class="weui-btn-area">
-            <block wx:if="{{pro_own.status=='开发中'}}">
+            <block wx:if="{{result.status=='开发中'}}">
               <button class="weui-btn" type="warn" disabled="true">已开发中 请选择其他项目</button>
             </block>
             <block wx:else>
@@ -41,7 +42,7 @@
                 </block>
                 <block wx:else>
                 <form bindsubmit="joinin" report-submit='true'>
-                  <button form-type="submit" bindtap="" class="weui-btn" type="primary">参加项目</button>
+                  <button form-type="submit" bindtap="" class="weui-btn" data-owner="{{owner}}" type="primary">参加项目</button>
                 </form>
                 </block>
               </block>
