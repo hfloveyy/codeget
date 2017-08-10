@@ -86,10 +86,11 @@
         <view class="weui-media-box weui-media-box_text">
           <block wx:if="{{isSelected.length>0}}">
             <block wx:for="{{isSelected}}">
-              <view class="text">
+              <view class="text weui-media-box weui-media-box_text" >
                 <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-                  <view bindtap="chatroom" data-id="{{item.proid}}" class="weui-cell__bd weui-cell_primary" >{{item.objectId}}开始沟通</view>
-                  <button  class="weui-btn mini-btn" data-id="{{item.proid}}" type="primary" size="mini">开始沟通</button>
+                  <view bindtap="chatroom" data-id="{{item.objectId}}" class="weui-cell__bd weui-cell_primary">{{item.title}}
+                    <view> ------>点击沟通</view>
+                  </view>
                 </view>
               </view>
             </block>

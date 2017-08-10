@@ -139,8 +139,6 @@ function getList() {
   var query = new Bmob.Query(Project);
   query.limit(10);
   query.descending('updatedAt')
-  var results = []
-  //var list = [{title:"failed"}];
   var promise = new Promise(function (resolve, reject) {
     query.find({
       success: function (results) {
@@ -254,24 +252,15 @@ function getPersonalData(userId) {
   var query = new Bmob.Query(personal);
   var promise = new Promise(function (resolve, reject) {
     //查询单条数据，第一个参数是这条数据的objectId值
-    query.equalTo("userid", userId)
-    query.find({
-      success: function (results) {
-        // 查询成功，调用get方法获取对应属性的值
-        console.log("共查询到 " + results.length + " 条记录");
-        // 循环处理查询到的数据
-        if (results.length > 0) {
+    //query.equalTo("userid", userId)
+    query.get(userId,{
+      success: function (result) {
           resolve({
-            data: results[0],
+            data: result,
+            telnum:result.get("telnum"),
+            content:result.get("content"),
             ret: true
           })
-        } else {
-          resolve({
-            data: null,
-            ret: false
-          })
-        }
-
       },
       error: function (object, error) {
         // 查询失败

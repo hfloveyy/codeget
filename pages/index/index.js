@@ -1,5 +1,6 @@
 //index.js
 var util = require('../../utils/util.js');
+var common = require('../../utils/common.js');
 //获取应用实例
 var app = getApp()
 Page({

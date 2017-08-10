@@ -17,7 +17,7 @@ Page({
     isSelected: [],
     currentId: 0,
     ownerid:null,
-    owner:{}
+    owner:{},
   },
 
   /**
@@ -87,12 +87,12 @@ Page({
           join_in_porject: results
         })
         // 循环处理查询到的数据
-
+        /*
         for (var i = 0; i < results.length; i++) {
           var object = results[i];
           console.log(object.id + ' - ' + object.get('title'));
 
-        }
+        }*/
       },
       error: function (error) {
         console.log("查询失败: " + error.code + " " + error.message);
@@ -100,16 +100,25 @@ Page({
     });
     //查询被选中的项目
     var Order = Bmob.Object.extend("order");
-    var query = new Bmob.Query(Order);
-    query.equalTo("developerid", currentUser.id)
+    var Project3 = Bmob.Object.extend("project");
+    var query3 = new Bmob.Query(Order); 
+    var proQuery2 = new Bmob.Query(Project3);
+
+    query3.equalTo("developerid", currentUser.id)
+    proQuery2.matchesKeyInQuery("objectId", "proid", query3);
     //查询单条数据，第一个参数是这条数据的objectId值
-    query.find({
+    proQuery2.find({
       success: function (results) {
         // 查询成功，调用get方法获取对应属性的值
         console.log("被选中：共查询到 " + results.length + " 条记录");
         that.setData({
           isSelected: results
         })
+        for (var i = 0; i < results.length; i++) {
+          var object = results[i];
+          console.log(object.id + ' - ' + object.get('title'));
+
+        }
       },
       error: function (object, error) {
         // 查询失败
@@ -136,7 +145,8 @@ Page({
 
 
   about: function (e) {
-    common.showModal('码赚是一个搭建客户<-->开发者项目供需平台！');
+    common.showModal('码赚是一个软件外包供需信息提供平台！平台本身不参与项目交易过程，如遇纠纷，与本平台无关！', "免责声明");
+
   },
 
   /**
@@ -175,22 +185,23 @@ Page({
   },
 
   chatroom: function (e) {
+    var currentUser = Bmob.User.current()
     var id = e.currentTarget.dataset.id;
-    console.log(id)
-    console.log(id)
-    console.log(id)
-    console.log(id)
+    var that = this
+
     
     util.getDetail(id).then(res => {
       that.setData({
         result: res.data,
         owner: res.user
       });
+      wx.navigateTo({
+        url: '../chatroom/chatroom?ownerid=' + that.data.owner.id + "&developerid=" + currentUser.id
+      })
     });
     
-    var currentUser = Bmob.User.current()
-    wx.navigateTo({
-      url: '../chatroom/chatroom?ownerid=' + this.data.owner.id + "&developerid=" + currentUser.id
-    })
+    
+    
+    
   }
 })

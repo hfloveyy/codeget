@@ -5,6 +5,7 @@ var app = getApp()
 Page({
     data: {
         userInfo: {},
+        num:0
     },
     onLoad: function () {
         var that = this
@@ -63,6 +64,11 @@ Page({
             });
         }
 
+    },
+    bindInput: function (e) {
+      this.setData({
+        num: e.detail.value.length
+      })
     },
 
 })

@@ -1,4 +1,5 @@
 var Bmob = require('utils/bmob.js')
+var common = require('utils/common.js');
 var BmobSocketIo = require('utils/bmobSocketIo.js').BmobSocketIo;
 Bmob.initialize("e536d63e102ea0664339f1fb98280579", "8a27ba47a9536e60293e647b28053f5e");
 
@@ -11,7 +12,7 @@ App({
     var user = new Bmob.User();//开始注册用户
     var newOpenid = wx.getStorageSync('openid')
     if (!newOpenid) {
-
+      common.showModal('码赚是一个软件外包供需信息提供平台！平台本身不参与项目交易过程，如遇纠纷，与本平台无关！',"免责声明");
 
       wx.login({
         success: function (res) {

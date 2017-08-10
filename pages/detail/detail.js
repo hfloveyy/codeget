@@ -76,6 +76,11 @@ Page({
         result: res.data,
         owner: res.user
       });
+      util.getUser(that.data.owner.id).then(res => {
+        that.setData({
+          trueowner: res.data,
+        });
+      })
     });
     /*
     util.getProjectStatus(id).then(res => {
@@ -100,11 +105,7 @@ Page({
       });
     });
     
-    util.getUser(that.data.owner.id).then(res => {
-      that.setData({
-        trueowner: res.data,
-      });
-    })
+    
 
     
 
@@ -163,11 +164,30 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    var that = this
+    console.log(that.data.proid)
+    return {
+      title: "码赚新项目,点击查看",
+      desc: '码赚新项目',
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
   },
   joinin: function (e) {
     var that = this
     var currentUser = Bmob.User.current(); 
+    util.getPersonalData(currentUser.id).then(res => {
+      if (res.content == "" || res.content==null||res.telnum==""||res.telnum==null){
+        common.showModal('请先完善资料，便于客户更好的了解优秀的你！');
+        return
+      }
+    })
+
+
     var Project_User = Bmob.Object.extend("project_user");
     var puQuery = new Bmob.Query(Project_User);
     puQuery.equalTo("user_id", currentUser.id);
