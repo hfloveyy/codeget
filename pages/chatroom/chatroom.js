@@ -107,8 +107,8 @@ Page({
     var that = this;
     ownerid = options.ownerid;
     developerid = options.developerid
-    console.log(ownerid+"-"+developerid)
-    chatTableName = ownerid +developerid
+    console.log(ownerid + "-" + developerid)
+    chatTableName = "c"+ownerid + developerid.substring(0,8)
     //chatTableName = "chat_"+ownerid
   },
 
@@ -134,6 +134,7 @@ Page({
 
     // 如果登录过，会记录当前用户openid
     var newOpenid = wx.getStorageSync('openid')
+    console.log(newOpenid)
     if (!newOpenid) {
       this.pushMessage(createSystemMessage('您当前未登陆...'));
     } else {

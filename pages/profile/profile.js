@@ -11,29 +11,82 @@ Page({
    */
   data: {
     motto: 'Hello World',
+    hasUserInfo: false,
     userInfo: {},
     myproject: [],
     join_in_porject: [],
     isSelected: [],
     currentId: 0,
-    ownerid:null,
-    owner:{},
+    ownerid: null,
+    owner: {},
+    canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     console.log('onLoad')
     var that = this
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        hasUserInfo: true
+      })
+    } else if (this.data.canIUse) {
+      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+      // 所以此处加入 callback 以防止这种情况
+      app.userInfoReadyCallback = res => {
+        this.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        })
+      }
+    } else {
+      // 在没有 open-type=getUserInfo 版本的兼容处理
+      wx.getUserInfo({
+        success: res => {
+          app.globalData.userInfo = res.userInfo
+          this.setData({
+            userInfo: res.userInfo,
+            hasUserInfo: true
+          })
+        }
+      })
+    }
     //调用应用实例的方法获取全局数据
+    /*
     app.getUserInfo(function (userInfo) {
       //更新数据
       that.setData({
         userInfo: userInfo
       })
-    })
+    })*/
 
+  },
+  getUserInfo: function (e) {
+    var currentUser = Bmob.User.current()
+    this.setData({
+      userInfo: e.detail.userInfo,
+      hasUserInfo: true
+    })
+    var userInfo = e.detail.userInfo;
+    var nickName = userInfo.nickName;
+    var avatarUrl = userInfo.avatarUrl;
+
+    var u = Bmob.Object.extend("_User");
+    var query = new Bmob.Query(u);
+    // 这个 id 是要修改条目的 id，你在生成这个存储并成功时可以获取到，请看前面的文档
+    query.get(currentUser.id, {
+      success: function (result) {
+        // 自动绑定之前的账号
+
+        result.set('nickName', nickName);
+        result.set("userPic", avatarUrl);
+        result.set("openid", wx.getStorageSync('openid'));
+        result.save();
+
+      }
+    });
   },
 
   /**
@@ -101,7 +154,7 @@ Page({
     //查询被选中的项目
     var Order = Bmob.Object.extend("order");
     var Project3 = Bmob.Object.extend("project");
-    var query3 = new Bmob.Query(Order); 
+    var query3 = new Bmob.Query(Order);
     var proQuery2 = new Bmob.Query(Project3);
 
     query3.equalTo("developerid", currentUser.id)
@@ -189,7 +242,7 @@ Page({
     var id = e.currentTarget.dataset.id;
     var that = this
 
-    
+
     util.getDetail(id).then(res => {
       that.setData({
         result: res.data,
@@ -199,9 +252,9 @@ Page({
         url: '../chatroom/chatroom?ownerid=' + that.data.owner.id + "&developerid=" + currentUser.id
       })
     });
-    
-    
-    
-    
+
+
+
+
   }
 })

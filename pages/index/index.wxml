@@ -4,7 +4,6 @@
   <view class="page__hd">
   </view>
   <view class="page__bd">
-
     <scroll-view scroll-top="{{scrollTop}}" scroll-y="true" style="height:{{scrollHeight}}px;" class="list" bindscrolltolower="bindDownLoad" bindscroll="scroll" bindscrolltoupper="refresh">
       <block wx:if="{{list.length>0}}">
         <block wx:for="{{list}}">

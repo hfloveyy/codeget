@@ -183,7 +183,9 @@ Page({
     util.getPersonalData(currentUser.id).then(res => {
       if (res.content == "" || res.content==null||res.telnum==""||res.telnum==null){
         common.showModal('请先完善资料，便于客户更好的了解优秀的你！');
-        return
+        wx.switchTab({
+          url: '../profile/profile'
+        });
       }
     })
 

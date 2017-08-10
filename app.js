@@ -12,22 +12,23 @@ App({
     var user = new Bmob.User();//开始注册用户
     var newOpenid = wx.getStorageSync('openid')
     if (!newOpenid) {
-      common.showModal('码赚是一个软件外包供需信息提供平台！平台本身不参与项目交易过程，如遇纠纷，与本平台无关！',"免责声明");
+      common.showModal('码赚是一个软件外包供需信息提供平台！平台本身不参与项目交易过程，如遇纠纷，与本平台无关！', "免责声明");
 
       wx.login({
         success: function (res) {
           user.loginWithWeapp(res.code).then(function (user) {
             var openid = user.get("authData").weapp.openid;
             console.log(user, 'user', user.id, res);
-
+            wx.setStorageSync('openid', openid)
             if (user.get("nickName")) {
               // 第二次访问
               console.log(user.get("nickName"), 'res.get("nickName")');
 
-              wx.setStorageSync('openid', openid)
+
             } else {
 
               //保存用户其他信息
+              /*
               wx.getUserInfo({
                 success: function (result) {
 
@@ -52,7 +53,7 @@ App({
 
                 }
               });
-
+              */
 
             }
 
@@ -63,29 +64,29 @@ App({
 
         }
       });
-    }
+      wx.getSetting({
+        success: res => {
+          if (res.authSetting['scope.userInfo']) {
+            // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+            wx.getUserInfo({
+              success: res => {
+                // 可以将 res 发送给后台解码出 unionId
+                this.globalData.userInfo = res.userInfo
 
-
-
-  },
-  getUserInfo: function (cb) {
-    var that = this
-    if (this.globalData.userInfo) {
-      typeof cb == "function" && cb(this.globalData.userInfo)
-    } else {
-      //调用登录接口
-      wx.login({
-        success: function () {
-
-          wx.getUserInfo({
-            success: function (res) {
-              that.globalData.userInfo = res.userInfo
-              typeof cb == "function" && cb(that.globalData.userInfo)
-            }
-          })
+                // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                // 所以此处加入 callback 以防止这种情况
+                if (this.userInfoReadyCallback) {
+                  this.userInfoReadyCallback(res)
+                }
+              }
+            })
+          }
         }
-      })
+      });
     }
+
+
+
   },
   globalData: {
     userInfo: null

@@ -57,23 +57,12 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
 
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-
-  },
+ 
   bindPickerChange1: function (e) {
     //console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
@@ -96,12 +85,7 @@ Page({
       hidden: false
     });
     var that = this
-    app.getUserInfo(function (userInfo) {
-      //更新数据
-      that.setData({
-        userInfo: userInfo
-      })
-    })
+
     let title = e.detail.value.title
 
     let typeone = e.detail.value.typepicker
