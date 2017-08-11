@@ -69,17 +69,19 @@ Page({
     var that = this;
     that.setData({
       proid: id,
-      ownerid:currentUser.id
+      ownerid: currentUser.id
     });
     util.getDetail(id).then(res => {
       that.setData({
         result: res.data,
         owner: res.user
       });
+      console.log(that.data.owner.id)
       util.getUser(that.data.owner.id).then(res => {
         that.setData({
           trueowner: res.data,
         });
+        console.log(that.data.trueowner)
       })
     });
     /*
@@ -104,10 +106,10 @@ Page({
         isSelected: res.data,
       });
     });
-    
-    
 
-    
+
+
+
 
 
     /**
@@ -179,52 +181,66 @@ Page({
   },
   joinin: function (e) {
     var that = this
-    var currentUser = Bmob.User.current(); 
+    var currentUser = Bmob.User.current();
     util.getPersonalData(currentUser.id).then(res => {
-      if (res.content == "" || res.content==null||res.telnum==""||res.telnum==null){
-        common.showModal('请先完善资料，便于客户更好的了解优秀的你！');
-        wx.switchTab({
-          url: '../profile/profile'
-        });
-      }
-    })
-
-
-    var Project_User = Bmob.Object.extend("project_user");
-    var puQuery = new Bmob.Query(Project_User);
-    puQuery.equalTo("user_id", currentUser.id);
-    puQuery.find({
-      success: function (results) {
-        for (var i = 0; i < results.length; i++) {
-          var object = results[i];
-          //console.log(object.get('pro_id'))
-          if (object.get('pro_id') == that.data.result.id) {
-            that.setData({
-              hidden: true
-            });
-            return
+      if (res.content == "" || res.content == null || res.telnum == "" || res.telnum == null) {
+        wx.showModal({
+          title: '提示',
+          content: '请先完善资料，便于客户更好的了解优秀的你！',
+          showCancel:false,
+          success: function (res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              wx.switchTab({
+                url: '../profile/profile'
+              });
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
           }
-        }
-        //console.log(that.data.trueowner.get("objectId"))
-        var pro_user = new Project_User();
-        pro_user.set("user_id", currentUser.id)
-        pro_user.set("pro_id", that.data.result.id)
-        pro_user.save().then(function (object) {
-          //newOneJoin(e, that.data.result.get("title"), that.data.trueowner.get("openid"), currentUser.get("nickName"))
-          wx.showToast({
-            title: '参加项目成功!',
-          });
-          
-          wx.switchTab({
-            url: '../profile/profile'
-          });
         })
-      },
-      error: function (error) {
-        console.log("查询失败: " + error.code + " " + error.message);
+        
+      } else {
+        var Project_User = Bmob.Object.extend("project_user");
+        var puQuery = new Bmob.Query(Project_User);
+        puQuery.equalTo("user_id", currentUser.id);
+        puQuery.find({
+          success: function (results) {
+            for (var i = 0; i < results.length; i++) {
+              var object = results[i];
+              //console.log(object.get('pro_id'))
+              if (object.get('pro_id') == that.data.result.id) {
+                that.setData({
+                  hidden: true
+                });
+                return
+              }
+            }
+            //console.log(that.data.trueowner.get("objectId"))
+            var pro_user = new Project_User();
+            pro_user.set("user_id", currentUser.id)
+            pro_user.set("pro_id", that.data.result.id)
+            pro_user.save().then(function (object) {
+              //newOneJoin(e, that.data.result.get("title"), that.data.trueowner.get("openid"), currentUser.get("nickName"))
+              wx.showToast({
+                title: '参加项目成功!',
+              });
+
+              wx.switchTab({
+                url: '../profile/profile'
+              });
+            })
+          },
+          error: function (error) {
+            console.log("查询失败: " + error.code + " " + error.message);
+          }
+        })
       }
     })
-    
+
+
+
+
   },
 
 

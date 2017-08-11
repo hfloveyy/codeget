@@ -93,7 +93,7 @@ function getDetail(objectId) {
     query.get(objectId, {
       success: function (result) {
         // 查询成功，调用get方法获取对应属性的值
-        console.log(result.get("objectId"));
+        //console.log(result.get("objectId"));
         resolve({
           data: result,
           user: result.get("user")
@@ -211,7 +211,7 @@ function isJoinin(objectId, userId) {
 
 
 //是否被选择
-function isSelected(proId, userId,developerId) {
+function isSelected(proId, userId, developerId) {
 
   var ret = false;
   var Order = Bmob.Object.extend("order");
@@ -247,20 +247,30 @@ function isSelected(proId, userId,developerId) {
 }
 //查询个人资料
 function getPersonalData(userId) {
+  var content = ""
+  var telnum = ""
   var ret = false
   var personal = Bmob.Object.extend("personalData");
   var query = new Bmob.Query(personal);
   var promise = new Promise(function (resolve, reject) {
     //查询单条数据，第一个参数是这条数据的objectId值
-    //query.equalTo("userid", userId)
-    query.get(userId,{
-      success: function (result) {
-          resolve({
-            data: result,
-            telnum:result.get("telnum"),
-            content:result.get("content"),
-            ret: true
-          })
+    query.equalTo("userid", userId)
+    query.find({
+      success: function (results) {
+        for (var i = 0; i < results.length; i++) {
+          var object = results[i];
+          content = object.get('content')
+          telnum = object.get('telnum')
+          console.log(object.id + ' - ' + object.get('content'));
+        }
+        if (results.length>0) ret = true;
+        resolve({
+          data: results[0],
+          content: content,
+          telnum: telnum,
+          ret: ret
+        })
+        //console.log("success")
       },
       error: function (object, error) {
         // 查询失败
@@ -268,6 +278,7 @@ function getPersonalData(userId) {
           data: null,
           ret: false
         })
+        //console.log("error")
       }
     })
   });
@@ -390,7 +401,7 @@ function updateProjectStatus(proid, status) {
   });
   return promise
 }
-function getUser(userId){
+function getUser(userId) {
   console.log(userId)
   var User = Bmob.Object.extend("_User");
   var query = new Bmob.Query(User);

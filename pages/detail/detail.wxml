@@ -5,7 +5,7 @@
   <view class="page__bd">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">项目类型：{{result.protype}}</view>
-      <view class="weui-panel__hd">客户：{{trueowner.nickName}}</view>
+      <view class="weui-panel__hd">客户ID：{{trueowner.objectId}}</view>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">项目需求：</view>
@@ -23,7 +23,7 @@
           <view class="weui-media-box weui-media-box_text">
             <view class="weui-media-box__title weui-media-box__title_in-text">招募到的开发者：</view>
             <block wx:for="{{people}}">
-              <view bindtap="userDetail" data-developerid="{{item.objectId}}" class="weui-media-box__title weui-media-box__title_in-text">{{item.nickName}}</view>
+              <view bindtap="userDetail" data-developerid="{{item.objectId}}" class="weui-media-box__title weui-media-box__title_in-text">{{item.objectId}}</view>
             </block>
           </view>
         </block>

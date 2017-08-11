@@ -106,6 +106,11 @@ Page({
       this.setData(
         { popErrorMsg: "内容不能为空" },
       );
+      wx.showToast({
+        title: '内容不能为空！',
+        icon: 'success',
+        duration: 1000
+      })
       this.ohShitfadeOut();
       that.setData({
         hidden: true
@@ -119,13 +124,17 @@ Page({
       console.log(res);
       wx.showToast({
         title: '发布项目成功',
+        success: function(){
+          wx.switchTab({
+            url: '../index/index'
+          });
+          that.setData({
+            hidden: true
+          });
+        }
       });
-      wx.switchTab({
-        url: '../index/index'
-      });
-      that.setData({
-        hidden: true
-      });
+
+
     })
   },
   ohShitfadeOut() {

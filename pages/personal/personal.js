@@ -2,6 +2,9 @@ var util = require('../../utils/util.js');
 var Bmob = util.Bmob;
 var app = getApp()
 var inputinfo = "";
+
+
+
 Page({
   data: {
     userInfo: {},
@@ -9,26 +12,40 @@ Page({
     result: {},
     modifyType: "",
     animationData: "",
-    showModalStatus: false
+    showModalStatus: false,
+    num: 0
   },
   onLoad: function (options) {
     var that = this
-
-
+    console.log(app.globalData.userInfo)
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        hasUserInfo: true
+      })
+    }
 
     var currentId = options.currentId;
-    console.log(currentId)
+    
     util.getPersonalData(currentId).then(res => {
       that.setData({
         result: res.data,
         complete: res.ret
       });
+      console.log(that.data.complete)
     });
 
 
     //调用应用实例的方法获取全局数据
 
   },
+
+  bindInput: function (e) {
+    this.setData({
+      num: e.detail.value.length
+    })
+  },
+
   personalData: function (event) {
     var currentUser = Bmob.User.current()
     var that = this;
@@ -45,10 +62,13 @@ Page({
       console.log(res);
       wx.showToast({
         title: '保存个人资料成功',
+        success: function(result){
+          wx.switchTab({
+            url: '../profile/profile'
+          });
+        }
       });
-      wx.switchTab({
-        url: '../profile/profile'
-      });
+      
       that.setData({
         hidden: true
       });
@@ -126,7 +146,7 @@ Page({
         // 添加成功，返回成功之后的objectId（注意：返回的属性名字是id，不是objectId），你还可以在Bmob的Web管理后台看到对应的数据
         console.log("日记创建成功, objectId:" + result.id);
         that.setData({
-          result:result
+          result: result
         });
       },
       error: function (result, error) {

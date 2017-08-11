@@ -16,7 +16,7 @@ function showModal(c,t,fun) {
     wx.showModal({
         title: t,
         content: c,
-        showCancel:false,
+        showCancel:true,
         success: fun
     })
 }

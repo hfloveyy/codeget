@@ -8,12 +8,10 @@
 }
 
 .userinfo-avatar {
-  width: 180rpx;
-  height: 180rpx;
+  width: 128rpx;
+  height: 128rpx;
   margin: 20rpx;
-  margin-bottom: 2rpx;
   border-radius: 50%;
-  border: 2px solid #fff;
 }
 
 .commodity_screen {
