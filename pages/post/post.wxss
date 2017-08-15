@@ -8,4 +8,8 @@ page{background: #f4f4f4;}
 .one_stars{color: #999;}  
 .one_star{font-size: 20rpx;color: #999;}  
 .danger{ color: #f64400;}  
-.ad_popError{ background: #de352d; color: #fff; height: 65rpx; line-height: 65rpx; font-size: 24rpx; text-align: center;  position: absolute; left: 0; top: 0; width: 100%; z-index:3;}  
+.ad_popError{ background: #de352d; color: #fff; height: 65rpx; line-height: 65rpx; font-size: 24rpx; text-align: center;  position: absolute; left: 0; top: 0; width: 100%; z-index:3;}
+
+
+
+

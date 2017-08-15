@@ -8,7 +8,9 @@
         <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
         <text class="userinfo-nickname">{{userInfo.nickName}}</text>
       </block>
-      <button wx:else open-type="getUserInfo" type="primary" bindgetuserinfo="getUserInfo" bindtap="canILogin"> 点击登录 </button>
+      <block wx:else>
+        <button open-type="getUserInfo" type="primary" bindgetuserinfo="getUserInfo" bindtap="canILogin"> 点击登录 </button>
+      </block>
     </view>
   </view>
   <view class="page__bd">
@@ -59,49 +61,62 @@
         </view>
       </view>
     </view>
-    <view class="weui-panel weui-panel_access">
-      <view class="weui-panel__hd">发布的项目：</view>
-      <view class="weui-panel__bd">
-        <view class="weui-media-box weui-media-box_text">
-          <block wx:if="{{myproject.length>0}}">
-            <block wx:for="{{myproject}}">
-              <view class="text" data-id="{{item.objectId}}" bindtap="publish_action">
-                <view class="weui-media-box__title weui-media-box__title_in-text">{{item.title}}</view>
-              </view>
-            </block>
-          </block>
-        </view>
-      </view>
-      <view class="weui-panel__hd">参加的项目：</view>
-      <view class="weui-panel__bd">
-        <view class="weui-media-box weui-media-box_text">
-          <block wx:if="{{join_in_porject.length>0}}">
-            <block wx:for="{{join_in_porject}}">
-              <view class="text" data-id="{{item.objectId}}" bindtap="joinin_action">
-                <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-                  <view class="weui-cell__bd weui-cell_primary">{{item.title}}</view>
-                </view>
-              </view>
-            </block>
-          </block>
-        </view>
-      </view>
-      <view class="weui-panel__hd">被选择的项目：</view>
-      <view class="weui-panel__bd">
-        <view class="weui-media-box weui-media-box_text">
-          <block wx:if="{{isSelected.length>0}}">
-            <block wx:for="{{isSelected}}">
-              <view class="text weui-media-box weui-media-box_text">
-                <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-                  <view bindtap="chatroom" data-id="{{item.objectId}}" class="weui-cell__bd weui-cell_primary">{{item.title}}
-                    <view> ------>点击沟通</view>
-                  </view>
-                </view>
-              </view>
-            </block>
-          </block>
-        </view>
-      </view>
+
+
+
+
+    <view class="weui-panel__hd">发布的项目：</view>
+    <view class="weui-panel__bd">
+      <block wx:if="{{myproject.length>0}}">
+        <block wx:for="{{myproject}}">
+          <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text" data-id="{{item.objectId}}" bindtap="publish_action">{{item.title}}</view>
+            <view class="weui-media-box__info">
+              <view class="weui-media-box__info__meta weui-media-time">时间：{{item.updatedAt}}</view>
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+
+
+
+
+
+
+
+    <view class="weui-panel__hd">参加的项目：</view>
+    <view class="weui-panel__bd">
+      <block wx:if="{{join_in_porject.length>0}}">
+        <block wx:for="{{join_in_porject}}">
+          <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text" data-id="{{item.objectId}}" bindtap="joinin_action">
+              <view class=" weui-cell__bd weui-cell_primary">{{item.title}}</view>
+            </view>
+            <view class="weui-media-box__info">
+              <view class="weui-media-box__info__meta weui-media-time">时间：{{item.updatedAt}}</view>
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+
+
+
+    <view class="weui-panel__hd">被选择的项目：</view>
+    <view class="weui-panel__bd">
+      <block wx:if="{{isSelected.length>0}}">
+        <block wx:for="{{isSelected}}">
+          <view class="weui-media-box weui-media-box_text">
+            <view class="weui-media-box__title weui-media-box__title_in-text" hover-class="weui-cell_active">
+              <view bindtap="chatroom" data-id="{{item.objectId}}" class="weui-cell__bd weui-cell_primary">{{item.title}}</view>
+            </view>
+            <view class="weui-media-box__info">
+              <view class="weui-media-box__info__meta weui-media-time">点击沟通</view>
+            </view>
+          </view>
+        </block>
+      </block>
     </view>
   </view>
-</view>
+  </view>

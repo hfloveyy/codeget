@@ -69,6 +69,22 @@ Page({
   },
   refresh: function (event) {
     //  该方法绑定了页面滑动到顶部的事件，然后做上拉刷新
+    console.log("refresh")
+    var that = this
+    this.setData({
+      list: [],
+      scrollTop: 0,
+      hidden:false
+    });
+    util.getList().then(res => {
+      that.setData({
+        list: res.data,
+        hidden: true
+      });
+    })
+  },
+  onPullDownRefresh: function () {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
     var that = this
     this.setData({
       list: [],
@@ -79,7 +95,9 @@ Page({
         list: res.data,
         hidden: true
       });
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh()
     })
-  }
+  },
 })
 
